@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-passwords',
@@ -6,5 +7,9 @@ import { Component } from '@angular/core';
   styleUrl: './passwords.component.css'
 })
 export class PasswordsComponent {
+
+  constructor(private title:Title){
+    this.title.setTitle('Passwords');
+  }
 
 }

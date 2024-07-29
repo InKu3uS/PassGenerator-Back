@@ -1,26 +1,20 @@
-import { Component } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
+import { TitleService } from '../../services/title/title.service';
 import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrl: './home.component.css'
+  styleUrl: './home.component.css',
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
+  private titleService = inject(TitleService);
+  private title = inject(Title);
 
-  constructor(private title:Title){
-    window.addEventListener('focus', event => {
-      this.title.setTitle('Inicio');
-    });
-    window.addEventListener('blur', event => {
-      setTimeout(() => {
-        this.title.setTitle('Hey! Sigues ahi?');
-      }, 30000);
-      
-      
-    });
+  private defaultTitle: string = 'PassGenerator - Inicio';
+
+  ngOnInit(): void {
+    this.title.setTitle(this.defaultTitle);
+    this.titleService.blurTitle(this.defaultTitle);
   }
-
-
-
 }

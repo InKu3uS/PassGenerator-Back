@@ -8,9 +8,14 @@ import { Component } from '@angular/core';
 export class HeaderComponent {
 
   shodDropdown = false;
+  showMobileMenu = false;
 
   toggleDropdown() {
     this.shodDropdown =!this.shodDropdown;
+  }
+
+  toggleMobileMenu() {
+    this.showMobileMenu =!this.showMobileMenu;
   }
 
 }

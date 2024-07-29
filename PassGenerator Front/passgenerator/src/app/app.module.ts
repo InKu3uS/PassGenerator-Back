@@ -6,17 +6,25 @@ import { AppComponent } from './app.component';
 import { HeaderComponent } from './components/header/header.component';
 import { HomeComponent } from './components/home/home.component';
 import { PasswordsComponent } from './components/passwords/passwords.component';
+import { HttpClientModule } from '@angular/common/http';
+import { UserListComponent } from './components/user-list/user-list.component';
+import { LoginComponent } from './components/login/login.component';
+
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
     HomeComponent,
-    PasswordsComponent
+    PasswordsComponent,
+    UserListComponent,
+    LoginComponent,
+
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

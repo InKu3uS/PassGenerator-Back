@@ -28,7 +28,7 @@ public class SecurityConfig {
                 .cors(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authRequest ->
                         authRequest
-                            .requestMatchers("/auth/**", "/docs/**", "/v3/api-docs/**").permitAll()
+                            .requestMatchers("/auth/**", "/docs/**", "/v3/api-docs/**,", "/users/**").permitAll()
                             .anyRequest().authenticated()
                 )
                 .sessionManagement(sessionManager -> sessionManager

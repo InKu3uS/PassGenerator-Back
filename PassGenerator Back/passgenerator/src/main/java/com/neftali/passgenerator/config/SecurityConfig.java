@@ -12,6 +12,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import java.util.Arrays;
+
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -19,6 +21,7 @@ public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final AuthenticationProvider authProvider;
+
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -28,7 +31,11 @@ public class SecurityConfig {
                 .cors(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authRequest ->
                         authRequest
-                            .requestMatchers("/auth/**", "/docs/**", "/v3/api-docs/**,", "/users/**").permitAll()
+                            .requestMatchers("/auth/**",
+                                    "/swagger-ui/**",
+                                    "/v3/**",
+                                    "/users/**"
+                            ).permitAll()
                             .anyRequest().authenticated()
                 )
                 .sessionManagement(sessionManager -> sessionManager

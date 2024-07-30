@@ -3,29 +3,35 @@ import { TitleService } from '../../services/title/title.service';
 import { Title } from '@angular/platform-browser';
 import { AuthService } from '../../services/auth/auth.service';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { Router } from '@angular/router';
+import { HeaderComponent } from '../header/header.component';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrl: './login.component.css'
+  styleUrl: './login.component.css',
 })
-export class LoginComponent implements OnInit{
+export class LoginComponent implements OnInit {
   private titleService = inject(TitleService);
+  private route = inject(Router);
   private service = inject(AuthService);
   private title = inject(Title);
 
   private defaultTitle: string = 'PassGenerator - Login';
-  
 
   ngOnInit(): void {
     this.title.setTitle(this.defaultTitle);
     this.titleService.blurTitle(this.defaultTitle);
+
+    this.redirectIfLoggedIn();
   }
 
   login(): void {
     const helper = new JwtHelperService();
-    const username = (document.getElementById('email') as HTMLInputElement).value
-    const password = (document.getElementById('password') as HTMLInputElement).value;
+    const username = (document.getElementById('email') as HTMLInputElement)
+      .value;
+    const password = (document.getElementById('password') as HTMLInputElement)
+      .value;
 
     this.service.login(username, password).subscribe({
       next: (session) => {
@@ -33,12 +39,21 @@ export class LoginComponent implements OnInit{
         localStorage.setItem('token', session.token);
         const decodedToken = helper.decodeToken(session.token);
         localStorage.setItem('user', decodedToken.sub);
-        console.log(decodedToken);
-        // TODO: Redireccionar al dashboard
-      }, error: (error) => {
-        console.error('Error logging in', error);
-        // TODO: Mostrar mensaje de error al usuario
-      }
+        this.route.navigate(['/home']).then(()=> {location.reload()});
+      },
+      error: (error) => {
+        if(error.status === 403){
+          console.log('Invalid credentials. Please try again.');
+        }else{
+          console.error('Error logging in', error);
+        }
+      },
     });
+  }
+
+  redirectIfLoggedIn() {
+    if (this.service.isLoggedIn()) {
+      this.route.navigate(['/home']);
+    }
   }
 }

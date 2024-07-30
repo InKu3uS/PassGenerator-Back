@@ -19,12 +19,14 @@ import { LoginComponent } from './components/login/login.component';
     PasswordsComponent,
     UserListComponent,
     LoginComponent,
-
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+  ],
+  exports: [
+    HeaderComponent,
   ],
   providers: [],
   bootstrap: [AppComponent]

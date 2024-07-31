@@ -28,16 +28,17 @@ export class LoginComponent implements OnInit {
 
   login(): void {
     const helper = new JwtHelperService();
-    const username = (document.getElementById('email') as HTMLInputElement)
+    const mail = (document.getElementById('email') as HTMLInputElement)
       .value;
     const password = (document.getElementById('password') as HTMLInputElement)
       .value;
 
-    this.service.login(username, password).subscribe({
+    this.service.login(mail, password).subscribe({
       next: (session) => {
         console.log('Logged in successfully');
         localStorage.setItem('token', session.token);
         const decodedToken = helper.decodeToken(session.token);
+        console.log(decodedToken);
         localStorage.setItem('user', decodedToken.sub);
         this.route.navigate(['/home']).then(()=> {location.reload()});
       },

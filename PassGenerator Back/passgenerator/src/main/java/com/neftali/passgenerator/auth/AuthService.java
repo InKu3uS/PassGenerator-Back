@@ -24,10 +24,9 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
 
     public AuthResponse login(LoginRequest request) throws UserNotFoundException {
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
-        User user = repository.findByUsername(request.getUsername()).orElseThrow();
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getMail(), request.getPassword()));
+        User user = repository.findByEmail(request.getMail()).orElseThrow();
         String token = jwtService.getToken(user);
-
 
         return AuthResponse.builder()
                 .token(token)

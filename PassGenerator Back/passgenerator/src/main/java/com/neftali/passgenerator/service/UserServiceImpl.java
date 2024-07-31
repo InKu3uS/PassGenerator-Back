@@ -51,7 +51,7 @@ public class UserServiceImpl implements UserService{
     @Override
     @Transactional
     public void save(User user) throws UserNotFoundException {
-        Optional<User> userExists = repository.findByUsername(user.getUsername());
+        Optional<User> userExists = repository.findByEmail(user.getEmail());
         if(userExists.isPresent()){
             userExists.get().setUsername(user.getUsername());
             userExists.get().setEmail(user.getEmail());

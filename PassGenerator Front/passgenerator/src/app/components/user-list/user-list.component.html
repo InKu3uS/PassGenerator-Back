@@ -1,1 +1,43 @@
-<p>user-list works!</p>
+<div class="container-fluid bg-slate-500 h-screen flex flex-col">
+    <div class="container-fluid mb-[-30px]">
+        <h1 class="text-5xl font-bold flex justify-center mt-8">Lista de usuarios</h1>
+    </div>
+    <div class="container-fluid flex justify-center">
+        <table class="w-[40%] text-center text-gray-500 dark:text-gray-400 mt-20">
+            <thead class="text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <tr>
+                    <th scope="col" class="py-2 ">
+                        Nombre de usuario
+                    </th>
+                    <th scope="col">
+                        email
+                    </th>
+                    <th scope="col">
+                        Fecha de registro
+                    </th>
+                    <th scope="col">
+                        rol
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let user of userList" class="bg-white border-b text-xs text-center dark:bg-gray-800 dark:border-gray-700  hover:bg-gray-600 hover:text-orange-500 hover:font-semibold">
+                    <td scope="row" class="py-2">
+                        {{ user.username }}
+                    </td>
+                    <td>
+                        {{ user.email }}
+                    </td>
+                    <td>
+                        {{ user.createTime }}
+                    </td>
+                    <td>
+                        {{ user.role }}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    
+</div>
+

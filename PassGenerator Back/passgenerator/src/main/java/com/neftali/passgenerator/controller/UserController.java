@@ -28,8 +28,8 @@ public class UserController {
     }
 
     @GetMapping(value = {"/mail/{mail}"})
-    public ResponseEntity<User> findByEmail(@PathVariable String email) throws UserNotFoundException {
-        return ResponseEntity.ok(service.findByEmail(email));
+    public ResponseEntity<User> findByEmail(@PathVariable String mail) throws UserNotFoundException {
+        return ResponseEntity.ok(service.findByEmail(mail));
     }
 
     @DeleteMapping(value = {"/{email}"})
@@ -42,15 +42,4 @@ public class UserController {
             return ResponseEntity.notFound().build();
         }
     }
-
-    /**
-     * Sustituido por Auth/register
-     *
-    @PostMapping(value = {"/save"})
-    public ResponseEntity<String> save(@RequestBody User user) throws UserNotFoundException {
-        service.save(user);
-        return ResponseEntity.ok("Usuario creado con éxito");
-    }
-    */
-
 }

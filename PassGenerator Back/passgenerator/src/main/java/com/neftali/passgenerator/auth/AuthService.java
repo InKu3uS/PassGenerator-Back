@@ -24,7 +24,11 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
 
     public AuthResponse login(LoginRequest request) throws UserNotFoundException {
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getMail(), request.getPassword()));
+        try{
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getMail(), request.getPassword()));
+        }catch(Exception e){
+            throw new UserNotFoundException("Invalid email or password");
+        }
         User user = repository.findByEmail(request.getMail()).orElseThrow();
         String token = jwtService.getToken(user);
 

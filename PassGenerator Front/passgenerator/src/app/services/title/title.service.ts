@@ -29,9 +29,9 @@ export class TitleService {
         if (!link) {
           link = document.createElement('link');
         }
-        link.rel = 'icon';
+        link.rel = 'shortcut icon';
         link.type = 'image/gif';
-        link.href = 'hand.gif';
+        link.href = 'lock.gif';
         document.getElementsByTagName('head')[0].appendChild(link);
         this.title.setTitle('Hey!! Sigues ahi?');
       }, 3000);

@@ -1,13 +1,12 @@
 package com.neftali.passgenerator.service;
 
+import com.neftali.passgenerator.dto.CuentaDTO;
+import com.neftali.passgenerator.dto.CuentaMapper;
 import com.neftali.passgenerator.entity.Cuenta;
 import com.neftali.passgenerator.entity.User;
 import com.neftali.passgenerator.exceptions.CuentaNotFoundException;
-import com.neftali.passgenerator.exceptions.UserNotFoundException;
 import com.neftali.passgenerator.repository.CuentaRepository;
-import com.neftali.passgenerator.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,16 +22,16 @@ public class CuentaServiceImpl implements CuentaService{
     private CuentaRepository repository;
 
     @Autowired
-    private UserRepository userRepository;
+    private CuentaMapper cuentaMapper;
 
     @Override
     @Transactional(readOnly = true)
-    public List<Cuenta> findAll() throws CuentaNotFoundException {
+    public List<CuentaDTO> findAll() throws CuentaNotFoundException {
         List<Cuenta> cuentas = repository.findAll();
         if(cuentas.isEmpty()){
             throw new CuentaNotFoundException("No se han encontrado cuentas guardadas");
         }
-        return cuentas;
+        return cuentas.stream().map(cuenta -> cuentaMapper.cuentaToCuentaDTO(cuenta)).toList();
     }
 
     @Override
@@ -47,12 +46,12 @@ public class CuentaServiceImpl implements CuentaService{
 
     @Override
     @Transactional(readOnly = true)
-    public List<Cuenta> findByUser(User user) throws CuentaNotFoundException {
+    public List<CuentaDTO> findByUser(User user) throws CuentaNotFoundException {
         List<Cuenta> cuentas = repository.findByUser(user);
         if(cuentas.isEmpty()){
             throw new CuentaNotFoundException("No se han encontrado cuentas de ese usuario");
         }
-        return cuentas;
+        return cuentas.stream().map(cuenta -> cuentaMapper.cuentaToCuentaDTO(cuenta)).toList();
     }
 
     @Override
@@ -67,7 +66,7 @@ public class CuentaServiceImpl implements CuentaService{
 
     @Override
     @Transactional
-    public void save(Cuenta cuenta) throws CuentaNotFoundException, UserNotFoundException {
+    public void save(Cuenta cuenta) throws CuentaNotFoundException {
         Optional<Cuenta> cuentaExists = repository.findBySite(cuenta.getSite());
         if(cuentaExists.isPresent()){
             cuentaExists.get().setPassword(cuenta.getPassword());

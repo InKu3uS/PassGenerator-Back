@@ -16,7 +16,7 @@ export class PasswordsComponent implements OnInit {
   private title = inject(Title);
 
   defaultTitle: string = 'PassGenerator - Passwords';
-  AccountList: Cuenta[] = [];
+  accountList: Cuenta[] = [];
 
   ngOnInit(): void {
     this.title.setTitle(this.defaultTitle);
@@ -28,8 +28,16 @@ export class PasswordsComponent implements OnInit {
     this.service.getAllAccounts().subscribe({
       next: (accounts) => {
         console.table(accounts);
-        this.AccountList = accounts;
-        console.log(this.AccountList);
+        accounts.forEach((account) => {
+          console.log(account);
+          const accountsParsed = cuentaSchema.safeParse(account);
+          if(accountsParsed.success){
+            this.accountList.push(accountsParsed.data);
+          }else{
+            console.error('Invalid account:', accountsParsed.error);
+          }
+        })
+        
         
       },
       error: (error) => {

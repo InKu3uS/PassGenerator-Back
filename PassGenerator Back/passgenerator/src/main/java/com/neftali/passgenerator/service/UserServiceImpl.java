@@ -1,5 +1,7 @@
 package com.neftali.passgenerator.service;
 
+import com.neftali.passgenerator.dto.UserDTO;
+import com.neftali.passgenerator.dto.UserMapper;
 import com.neftali.passgenerator.entity.User;
 import com.neftali.passgenerator.exceptions.UserNotFoundException;
 import com.neftali.passgenerator.repository.UserRepository;
@@ -18,14 +20,17 @@ public class UserServiceImpl implements UserService{
     @Autowired
     private UserRepository repository;
 
+    @Autowired
+    private UserMapper userMapper;
+
     @Override
     @Transactional(readOnly = true)
-    public List<User> findAll() throws UserNotFoundException {
+    public List<UserDTO> findAll() throws UserNotFoundException {
         List<User> users = repository.findAll();
         if(users.isEmpty()){
             throw new UserNotFoundException("No se han encontrado usuarios");
         }
-        return users;
+        return users.stream().map(user -> userMapper.userToUserDTO(user)).toList();
     }
 
     @Override

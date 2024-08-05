@@ -25,12 +25,12 @@ public class UserServiceImpl implements UserService{
 
     @Override
     @Transactional(readOnly = true)
-    public List<UserDTO> findAll() throws UserNotFoundException {
+    public List<User> findAll() throws UserNotFoundException {
         List<User> users = repository.findAll();
         if(users.isEmpty()){
             throw new UserNotFoundException("No se han encontrado usuarios");
         }
-        return users.stream().map(user -> userMapper.userToUserDTO(user)).toList();
+        return users;
     }
 
     @Override

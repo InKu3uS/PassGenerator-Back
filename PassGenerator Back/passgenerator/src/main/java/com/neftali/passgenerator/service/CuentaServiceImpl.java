@@ -70,7 +70,6 @@ public class CuentaServiceImpl implements CuentaService{
         Optional<Cuenta> cuentaExists = repository.findBySite(cuenta.getSite());
         if(cuentaExists.isPresent()){
             cuentaExists.get().setPassword(cuenta.getPassword());
-            cuentaExists.get().setCreateTime(cuenta.getCreateTime());
             cuentaExists.get().setExpirationTime(cuenta.getExpirationTime());
             cuentaExists.get().setCreateTime(getFecha());
             repository.save(cuentaExists.get());

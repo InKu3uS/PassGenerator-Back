@@ -43,7 +43,7 @@ public class AuthService {
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .createTime(getFecha())
-                .role(Role.USER)
+                .role(Role.ROLE_USER)
                 .build();
 
         repository.save(user);

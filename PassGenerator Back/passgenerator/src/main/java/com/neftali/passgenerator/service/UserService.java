@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface UserService {
 
-    List<UserDTO> findAll() throws UserNotFoundException;
+    List<User> findAll() throws UserNotFoundException;
 
     User findByUuid(String uuid) throws UserNotFoundException;
 

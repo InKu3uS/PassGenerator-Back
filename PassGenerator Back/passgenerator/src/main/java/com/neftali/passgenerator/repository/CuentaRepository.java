@@ -1,5 +1,6 @@
 package com.neftali.passgenerator.repository;
 
+import com.neftali.passgenerator.dto.CuentaDTO;
 import com.neftali.passgenerator.entity.Cuenta;
 import com.neftali.passgenerator.entity.User;
 import com.neftali.passgenerator.exceptions.CuentaNotFoundException;

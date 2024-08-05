@@ -19,7 +19,8 @@ public class UserController {
     UserService service;
 
     @GetMapping(value = {"/list"})
-    public ResponseEntity<List<UserDTO>> findAll() throws UserNotFoundException {
+    public ResponseEntity<List<User
+            >> findAll() throws UserNotFoundException {
         return ResponseEntity.ok(service.findAll());
     }
 

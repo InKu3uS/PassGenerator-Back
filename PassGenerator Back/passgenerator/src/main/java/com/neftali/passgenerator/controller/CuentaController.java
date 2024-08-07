@@ -4,6 +4,7 @@ import com.neftali.passgenerator.entity.Cuenta;
 import com.neftali.passgenerator.entity.User;
 import com.neftali.passgenerator.exceptions.CuentaNotFoundException;
 import com.neftali.passgenerator.exceptions.UserNotFoundException;
+import com.neftali.passgenerator.dto.CuentaDTO;
 import com.neftali.passgenerator.service.CuentaService;
 import com.neftali.passgenerator.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,14 +26,14 @@ public class CuentaController {
     UserService userService;
 
     @GetMapping(value = {"/list"})
-    public ResponseEntity<List<Cuenta>> findAll() throws CuentaNotFoundException {
+    public ResponseEntity<List<CuentaDTO>> findAll() throws CuentaNotFoundException {
         return ResponseEntity.ok(service.findAll());
     }
 
 
-    @GetMapping(value = {"/user/{idUser}"})
-    public ResponseEntity<List<Cuenta>> findByIdUser(@PathVariable String idUser) throws CuentaNotFoundException, UserNotFoundException {
-        User user = userService.findByUuid(idUser);
+    @GetMapping(value = {"/user/{mailUser}"})
+    public ResponseEntity<List<CuentaDTO>> findByIdUser(@PathVariable String mailUser) throws CuentaNotFoundException, UserNotFoundException {
+        User user = userService.findByEmail(mailUser);
         return ResponseEntity.ok(service.findByUser(user));
     }
 

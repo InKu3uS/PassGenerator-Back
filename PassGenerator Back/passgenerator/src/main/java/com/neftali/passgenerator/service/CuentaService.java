@@ -4,20 +4,21 @@ import com.neftali.passgenerator.entity.Cuenta;
 import com.neftali.passgenerator.entity.User;
 import com.neftali.passgenerator.exceptions.CuentaNotFoundException;
 import com.neftali.passgenerator.exceptions.UserNotFoundException;
+import com.neftali.passgenerator.dto.CuentaDTO;
 
 import java.util.List;
 
 public interface CuentaService {
 
-    public List<Cuenta> findAll() throws CuentaNotFoundException;
+    List<CuentaDTO> findAll() throws CuentaNotFoundException;
 
-    public Cuenta findById(String id) throws CuentaNotFoundException;
+    Cuenta findById(String id) throws CuentaNotFoundException;
 
-    public List<Cuenta> findByUser(User user) throws CuentaNotFoundException;
+    List<CuentaDTO> findByUser(User user) throws CuentaNotFoundException;
 
-    public Cuenta findBySite(String site) throws CuentaNotFoundException;
+    Cuenta findBySite(String site) throws CuentaNotFoundException;
 
-    public void save(Cuenta cuenta) throws CuentaNotFoundException, UserNotFoundException;
+    void save(Cuenta cuenta) throws CuentaNotFoundException, UserNotFoundException;
 
-    public void delete(String site) throws CuentaNotFoundException;
+    void delete(String site) throws CuentaNotFoundException;
 }

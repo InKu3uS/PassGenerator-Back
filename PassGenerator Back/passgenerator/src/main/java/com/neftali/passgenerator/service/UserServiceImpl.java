@@ -1,5 +1,7 @@
 package com.neftali.passgenerator.service;
 
+import com.neftali.passgenerator.dto.UserDTO;
+import com.neftali.passgenerator.dto.UserMapper;
 import com.neftali.passgenerator.entity.User;
 import com.neftali.passgenerator.exceptions.UserNotFoundException;
 import com.neftali.passgenerator.repository.UserRepository;
@@ -17,6 +19,9 @@ public class UserServiceImpl implements UserService{
 
     @Autowired
     private UserRepository repository;
+
+    @Autowired
+    private UserMapper userMapper;
 
     @Override
     @Transactional(readOnly = true)

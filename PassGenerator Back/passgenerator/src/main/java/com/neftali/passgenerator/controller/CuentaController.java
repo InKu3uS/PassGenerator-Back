@@ -44,15 +44,19 @@ public class CuentaController {
 
     @PostMapping(value = {"/save"})
     public ResponseEntity<String> save(@RequestBody Cuenta cuenta) throws CuentaNotFoundException, UserNotFoundException {
+        System.out.println("CUENTA RECIBIDA: " + cuenta);
         try{
             service.save(cuenta);
-            return ResponseEntity.ok("Cuenta creada con éxito");
+            return ResponseEntity.status(HttpStatus.CREATED).body("Cuenta creada con éxito");
         } catch (CuentaNotFoundException e){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cuenta no encontrada");
+        } catch (UserNotFoundException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuario no encontrado");
         } catch (IllegalArgumentException e){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid argument");
+        } catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal Server Error");
         }
-
     }
 
     @DeleteMapping(value = {"/{site}"})

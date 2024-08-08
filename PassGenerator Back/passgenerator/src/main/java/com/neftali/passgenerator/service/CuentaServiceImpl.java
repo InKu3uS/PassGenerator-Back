@@ -5,7 +5,9 @@ import com.neftali.passgenerator.dto.CuentaMapper;
 import com.neftali.passgenerator.entity.Cuenta;
 import com.neftali.passgenerator.entity.User;
 import com.neftali.passgenerator.exceptions.CuentaNotFoundException;
+import com.neftali.passgenerator.exceptions.UserNotFoundException;
 import com.neftali.passgenerator.repository.CuentaRepository;
+import com.neftali.passgenerator.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +22,9 @@ public class CuentaServiceImpl implements CuentaService{
 
     @Autowired
     private CuentaRepository repository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private CuentaMapper cuentaMapper;
@@ -66,7 +71,11 @@ public class CuentaServiceImpl implements CuentaService{
 
     @Override
     @Transactional
-    public void save(Cuenta cuenta) throws CuentaNotFoundException {
+    public void save(Cuenta cuenta) throws CuentaNotFoundException, UserNotFoundException {
+        User user = userRepository.findByUuid(cuenta.getUser().getUuid())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        // Asigna el User recuperado a la Cuenta
+        cuenta.setUser(user);
         Optional<Cuenta> cuentaExists = repository.findBySite(cuenta.getSite());
         if(cuentaExists.isPresent()){
             cuentaExists.get().setPassword(cuenta.getPassword());

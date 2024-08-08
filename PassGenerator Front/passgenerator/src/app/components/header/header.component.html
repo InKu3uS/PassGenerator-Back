@@ -79,6 +79,12 @@
             >
             <a
               *ngIf="isLoggedIn"
+              routerLink="save"
+              class="rounded-md px-3 py-2 text-md font-bold text-gray-300 hover:bg-gray-700 hover:text-white focus:bg-violet-600"
+              >Guardar Password</a
+            >
+            <a
+              *ngIf="isLoggedIn"
               routerLink="passwords"
               class="rounded-md px-3 py-2 text-md font-bold text-gray-300 hover:bg-gray-700 hover:text-white focus:bg-violet-600"
               >Mis Passwords</a
@@ -231,9 +237,14 @@
         >Inicio</a
       >
       <a
-        routerLink="#"
+        routerLink="/generate"
         class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white focus:bg-violet-600"
         >Generar Password</a
+      >
+      <a
+        routerLink="/save"
+        class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white focus:bg-violet-600"
+        >Guardar Password</a
       >
       <a
         routerLink="/passwords"

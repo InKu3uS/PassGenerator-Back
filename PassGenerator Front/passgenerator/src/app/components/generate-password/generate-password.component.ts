@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { AccountsService } from '../../services/accounts/accounts.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'generate-password',
@@ -8,6 +10,9 @@ import { Component } from '@angular/core';
 export class GeneratePasswordComponent {
 
   passwordLength: number = 25;
+
+  private service = inject(AccountsService);
+  private router = inject(Router);
 
   /**
    * Obtiene el valor del slide '#length-range' y lo guarda el 'passwordLength'.
@@ -154,14 +159,14 @@ excludeChars(base:string, exclude:string) {
     }
     if (password.length <= 8) {
         message = "Una contraseña de 8 caracteres o menos puede romperse en menos de 8 horas";
-        passwordResult.className = "bg-yellow-600 p-2 rounded font-semibold";
+        passwordResult.className = "bg-yellow-500 p-2 rounded font-semibold";
         passwordResult.textContent = message;
         showPassword.classList.remove("hidden");
         showPassword.classList.add("flex");
     }
     if (password.length > 8 && password.length <= 16) {
 
-        passwordResult.className = "bg-yellow-600 p-2 rounded font-semibold";
+        passwordResult.className = "bg-yellow-500 p-2 rounded font-semibold";
         showPassword.classList.remove("hidden");
         showPassword.classList.add("flex");
 
@@ -180,5 +185,13 @@ excludeChars(base:string, exclude:string) {
         showPassword.classList.remove("hidden");
         showPassword.classList.add("flex");
     }
-}
+  }
+
+  savePassword(){
+    let generatedPassword = document.getElementById('generatedPassword') as HTMLSpanElement;
+    if(generatedPassword.textContent != null) {
+      this.service.savePassword(generatedPassword.textContent);
+      this.router.navigate(['/save']);
+    }
+  }
 }

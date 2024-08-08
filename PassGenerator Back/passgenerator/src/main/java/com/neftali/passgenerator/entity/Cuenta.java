@@ -15,8 +15,8 @@ public class Cuenta {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_uuid")
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_uuid", referencedColumnName = "uuid")
     private User user;
 
     @Column(unique = true, nullable = false)

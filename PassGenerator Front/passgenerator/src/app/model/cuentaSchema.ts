@@ -2,9 +2,11 @@ import { z } from "zod"
 
 export const cuentaSchema = z.object({
     id: z.string().optional(),
-    user_uuid: z.string(),
-    create_time: z.string(),
-    expiration_time: z.string(),
+    user: z.object({
+        uuid: z.string(),
+    }),
+    createTime: z.string(),
+    expirationTime: z.string(),
     site: z.string(),
     password: z.string(),
 });
@@ -14,5 +16,5 @@ export type Cuenta = z.infer<typeof cuentaSchema>
 export const emptyCuenta = cuentaSchema.partial();
 export const createCuenta = cuentaSchema.partial({
     id:true,
-    create_time:true
+    createTime:true
 })

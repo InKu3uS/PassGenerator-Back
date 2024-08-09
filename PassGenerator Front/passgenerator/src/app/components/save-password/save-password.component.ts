@@ -34,7 +34,6 @@ export class SavePasswordComponent implements OnInit {
       this.existsPassword();
     }
     this.getUserLogged();
-    console.log(this.user);
   }
 
   existsPassword(){
@@ -60,7 +59,6 @@ export class SavePasswordComponent implements OnInit {
     let password = this.cuentaForm.get('password')?.value;
     let expiration = this.cuentaForm.get('expiration')?.value;
     let cuenta: Cuenta = {
-      //TODO: Encontrar la manera de enviar el user UUID
       user:{
         uuid: this.user?.uuid ?? ""
       },
@@ -69,16 +67,15 @@ export class SavePasswordComponent implements OnInit {
       site: site,
       password: password
     };
-
     const validationResult = createCuenta.safeParse(cuenta);
     if (!validationResult.success) {
         console.error("Validation error:", validationResult.error);
-        return;  // Detén la ejecución si hay errores de validación
+        return;
     }
-    console.log(JSON.stringify(cuenta));
     this.service.save(cuenta).subscribe({
       next: (response) => {
-        console.log(response);
+        console.log(response.body.message);
+        console.log(response.status);
         this.cuentaForm.reset();
       },
       error: (error) => {

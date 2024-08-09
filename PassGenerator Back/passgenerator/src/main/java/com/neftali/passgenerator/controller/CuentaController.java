@@ -12,7 +12,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping(value = "cuentas")
@@ -43,19 +45,22 @@ public class CuentaController {
     }
 
     @PostMapping(value = {"/save"})
-    public ResponseEntity<String> save(@RequestBody Cuenta cuenta) throws CuentaNotFoundException, UserNotFoundException {
-        System.out.println("CUENTA RECIBIDA: " + cuenta);
+    public ResponseEntity<Map<String,String>> save(@RequestBody Cuenta cuenta) throws CuentaNotFoundException, UserNotFoundException {
+        Map<String, String> response = new HashMap<>();
         try{
             service.save(cuenta);
-            return ResponseEntity.status(HttpStatus.CREATED).body("Cuenta creada con éxito");
-        } catch (CuentaNotFoundException e){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Cuenta no encontrada");
-        } catch (UserNotFoundException e){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuario no encontrado");
+            response.put("status", "CREATED");
+            response.put("message", "Cuenta creada con éxito");
+            return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        } catch (CuentaNotFoundException | UserNotFoundException e){
+            response.put("message", "Cuenta no encontrada");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
         } catch (IllegalArgumentException e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid argument");
+            response.put("message", "Bad Request");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         } catch (Exception e){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal Server Error");
+            response.put("message", "Internal Server Error");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
 

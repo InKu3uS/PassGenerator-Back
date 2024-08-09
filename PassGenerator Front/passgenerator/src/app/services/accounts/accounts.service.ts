@@ -27,7 +27,7 @@ export class AccountsService {
     return this.generatedPassword;
   }
 
-  save(cuenta:Cuenta): Observable<Cuenta>{
-    return this.http.post<Cuenta>(`${this.apiUrl}/save`, cuenta);
+  save(cuenta:Cuenta): Observable<any>{
+    return this.http.post(`${this.apiUrl}/save`, cuenta, {responseType: 'json', observe: 'response'});
   }
 }

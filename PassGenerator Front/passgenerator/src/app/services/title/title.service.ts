@@ -34,7 +34,7 @@ export class TitleService {
         link.href = 'lock.gif';
         document.getElementsByTagName('head')[0].appendChild(link);
         this.title.setTitle('Hey!! Sigues ahi?');
-      }, 3000);
+      }, 15000);
     });
   }
 }

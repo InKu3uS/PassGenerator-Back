@@ -6,6 +6,7 @@ import { UserListComponent } from './components/user-list/user-list.component';
 import { LoginComponent } from './components/login/login.component';
 import { GeneratePasswordComponent } from './components/generate-password/generate-password.component';
 import { SavePasswordComponent } from './components/save-password/save-password.component';
+import { FaqComponent } from './components/faq/faq.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -16,6 +17,7 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent},
   { path: 'generate', component: GeneratePasswordComponent},
   { path: 'save', component: SavePasswordComponent },
+  { path: 'faq', component: FaqComponent },
 ];
 
 

@@ -12,6 +12,9 @@ import { LoginComponent } from './components/login/login.component';
 import { GeneratePasswordComponent } from './components/generate-password/generate-password.component';
 import { SavePasswordComponent } from './components/save-password/save-password.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { FaqComponent } from './components/faq/faq.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 
 
 @NgModule({
@@ -24,12 +27,14 @@ import { ReactiveFormsModule } from '@angular/forms';
     LoginComponent,
     GeneratePasswordComponent,
     SavePasswordComponent,
+    FaqComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     ReactiveFormsModule,
+    BrowserAnimationsModule,
   ],
   exports: [
     HeaderComponent,

@@ -27,14 +27,21 @@ public class SecurityConfig {
         return http
                 .csrf(AbstractHttpConfigurer::disable
                 )
-                .cors(AbstractHttpConfigurer::disable)
+                .cors(corsCustomizer -> corsCustomizer
+                        .configurationSource(request -> {
+                            var corsConfiguration = new org.springframework.web.cors.CorsConfiguration();
+                            corsConfiguration.addAllowedOrigin("http://localhost:4200");
+                            corsConfiguration.addAllowedMethod("*");
+                            corsConfiguration.addAllowedHeader("*");
+                            corsConfiguration.setAllowCredentials(true);
+                            return corsConfiguration;
+                        }))
                 .authorizeHttpRequests(authRequest ->
                         authRequest
-                            .requestMatchers("/auth/login",
-                                    "/auth/register",
+                            .requestMatchers("/auth/**",
                                     "/swagger-ui/**",
                                     "/v3/**",
-                                    "users/**",
+                                    //"users/**",
                                     "cuentas/**"
                             ).permitAll()
                             .anyRequest().authenticated()

@@ -18,7 +18,6 @@ import java.util.Map;
 
 @RestController
 @RequestMapping(value = "cuentas")
-@CrossOrigin
 public class CuentaController {
 
     @Autowired

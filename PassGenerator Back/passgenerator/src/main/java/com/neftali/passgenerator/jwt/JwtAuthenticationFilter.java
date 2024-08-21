@@ -1,5 +1,6 @@
 package com.neftali.passgenerator.jwt;
 
+import com.neftali.passgenerator.service.CustomUserDetailsService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -9,7 +10,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -22,17 +22,23 @@ import java.io.IOException;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
-    private final UserDetailsService userDetailsService;
+    private final CustomUserDetailsService userDetailsService;
 
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
 
+        if(isPublicRoute(request)){
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         final String token = getTokenFromRequest(request);
 
         if (token == null) {
-            filterChain.doFilter(request, response);
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().write("Token no proporcionado. Por favor, proporciona un token valido.");
             return;
         }
 
@@ -49,6 +55,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                             userDetails.getAuthorities());
                     authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     SecurityContextHolder.getContext().setAuthentication(authToken);
+                }else{
+                    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                    response.getWriter().write("El token proporcionado no es valido.");
+                    return;
                 }
             }
         } catch (io.jsonwebtoken.ExpiredJwtException ex) {
@@ -62,7 +72,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             response.getWriter().write("Error al procesar el token.");
             return;
         }
-
         filterChain.doFilter(request, response);
     }
 
@@ -73,5 +82,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return authHeader.substring(7);
         }
         return null;
+    }
+
+    private boolean isPublicRoute(HttpServletRequest request) {
+        String requestUri = request.getRequestURI();
+        return requestUri.startsWith("/auth/") ||
+                requestUri.startsWith("/swagger-ui/") ||
+                requestUri.startsWith("/v3/");
     }
 }

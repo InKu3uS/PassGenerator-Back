@@ -14,4 +14,10 @@ public class GlobalExceptionHandler {
     public String handleAuthenticationException(AuthenticationException e) {
         return e.getMessage();
     }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public String handleUserNotFoundException(UserNotFoundException e) {
+        return e.getMessage();
+    }
 }

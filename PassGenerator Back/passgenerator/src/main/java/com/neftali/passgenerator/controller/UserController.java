@@ -1,6 +1,5 @@
 package com.neftali.passgenerator.controller;
 
-import com.neftali.passgenerator.dto.UserDTO;
 import com.neftali.passgenerator.entity.User;
 import com.neftali.passgenerator.exceptions.UserNotFoundException;
 import com.neftali.passgenerator.service.UserService;
@@ -12,7 +11,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "users")
-@CrossOrigin
 public class UserController {
 
     @Autowired

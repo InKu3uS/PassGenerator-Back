@@ -25,6 +25,7 @@ public class JwtService {
         return getToken(new HashMap<>(), user);
     }
 
+
     private String getToken(Map<String,Object> extraClaims, User user) {
 
         long now = System.currentTimeMillis();

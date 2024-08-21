@@ -19,18 +19,23 @@ import java.util.function.Function;
 public class JwtService {
 
     private static final String SECRET_KEY =
-            "eyJhbGciOiJIUzI1NiJ9eyJSb2xlIjoiQWRtaW4iLCJJc3N1ZXIiOiJJc3N1ZXIiLCJVc2VybmFtZSI6IkphdmFJblVzZSIsImV4cCI6MTcyMTIwOTAyMywiaWF0IjoxNzIxMjA5MDIzfQACJJYUZyWNK4lF9DErwz70cQPQgB5xR1DYlFiqeEAAs";
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9eyJqdGkiOiJmOTYzYmM1Yi0xYTY0LTQ0NzgtYjk4YS1hNDY4NzJkNGY2NmEiLCJleHAiOjE1MjU5NjY1ODN9ZHjwy3Lt9ITCTMVrLVjNISYyMmWkZ30WaaTnOJfnw";
 
     public String getToken(User user) {
         return getToken(new HashMap<>(), user);
     }
 
     private String getToken(Map<String,Object> extraClaims, User user) {
+
+        long now = System.currentTimeMillis();
+        Date issuedAt = new Date(now);
+        Date expiration = new Date(now + 1000L * 60 * 60 * 24 * 30);
+
         return Jwts.builder()
                 .setClaims(extraClaims)
                 .setSubject(user.getEmail())
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis()+1000*60*60*24*30))
+                .setIssuedAt(issuedAt)
+                .setExpiration(expiration)
                 .signWith(getKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
@@ -67,7 +72,7 @@ public class JwtService {
         return getClaim(token, Claims::getExpiration);
     }
 
-    private boolean isTokenExpired(String token){
+    public boolean isTokenExpired(String token){
         return getExpiration(token).before(new Date());
     }
 }

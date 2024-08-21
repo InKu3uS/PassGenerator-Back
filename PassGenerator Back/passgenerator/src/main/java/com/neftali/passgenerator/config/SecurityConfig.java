@@ -12,7 +12,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
@@ -35,7 +34,7 @@ public class SecurityConfig {
                                     "/auth/register",
                                     "/swagger-ui/**",
                                     "/v3/**",
-                                    "/users/**",
+                                    "users/**",
                                     "cuentas/**"
                             ).permitAll()
                             .anyRequest().authenticated()

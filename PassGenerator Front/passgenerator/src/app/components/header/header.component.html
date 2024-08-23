@@ -1,4 +1,4 @@
-<nav class="bg-gray-800">
+<nav class="bg-gray-800 select-none">
   <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
     <div class="relative flex h-16 items-center justify-between">
       <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
@@ -62,41 +62,41 @@
             alt="Your Company"
           />
         </div>
-        <div class="max-sm:hidden sm:ml-6 sm:block">
-          <div class="flex space-x-4">
+        <div class="max-sm:hidden max-md:text-sm sm:ml-6 sm:block">
+          <div class="flex space-x-4 items-center">
             <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
             <a
               routerLink="home"
-              class="rounded-md px-3 py-2 text-md font-bold text-gray-300 hover:bg-gray-700 hover:text-white focus:bg-violet-600"
+              class="rounded-md px-3 py-2 max-md:text-sm max-md:px-1 text-md font-bold text-gray-300 hover:bg-gray-700 hover:text-white focus:bg-violet-600"
               aria-current="page"
               >Inicio</a
             >
             <a
               routerLink="generate"
-              class="rounded-md px-3 py-2 text-md font-bold text-gray-300 hover:bg-gray-700 hover:text-white focus:bg-violet-600"
+              class="rounded-md px-3 py-2 max-md:text-sm max-md:px-1 text-md font-bold text-gray-300 hover:bg-gray-700 hover:text-white focus:bg-violet-600"
               >Generar Password</a
             >
             <a
               *ngIf="isLoggedIn"
               routerLink="save"
-              class="rounded-md px-3 py-2 text-md font-bold text-gray-300 hover:bg-gray-700 hover:text-white focus:bg-violet-600"
+              class="rounded-md px-3 py-2 max-md:text-sm max-md:px-1 text-md font-bold text-gray-300 hover:bg-gray-700 hover:text-white focus:bg-violet-600"
               >Guardar Password</a
             >
             <a
               *ngIf="isLoggedIn"
               routerLink="passwords"
-              class="rounded-md px-3 py-2 text-md font-bold text-gray-300 hover:bg-gray-700 hover:text-white focus:bg-violet-600"
+              class="rounded-md px-3 py-2 max-md:text-sm max-md:px-1 text-md font-bold text-gray-300 hover:bg-gray-700 hover:text-white focus:bg-violet-600"
               >Mis Passwords</a
             >
             <a
               *ngIf="isLoggedIn"
               routerLink="users/list"
-              class="rounded-md px-3 py-2 text-md font-bold text-gray-300 hover:bg-gray-700 hover:text-white focus:bg-violet-600"
+              class="rounded-md px-3 py-2 max-md:text-sm max-md:px-1 text-md font-bold text-gray-300 hover:bg-gray-700 hover:text-white focus:bg-violet-600"
               >Lista de Usuarios</a
             >
             <a
               routerLink="/faq"
-              class="rounded-md px-3 py-2 text-md font-bold text-gray-300 hover:bg-gray-700 hover:text-white focus:bg-violet-600"
+              class="rounded-md px-3 py-2 max-md:text-sm max-md:px-1 text-md font-bold text-gray-300 hover:bg-gray-700 hover:text-white focus:bg-violet-600"
               >F.A.Q.</a
             >
           </div>

@@ -38,7 +38,6 @@ export class UserListComponent implements OnInit {
   getUsers(): void {
     this.service.getAllUsers().subscribe({
       next: (users) => {
-        console.log(users);
         users.forEach((user) => {
           const userParsed = userSchema.safeParse(user);
           if(userParsed.success){
@@ -50,11 +49,7 @@ export class UserListComponent implements OnInit {
       },
       error: (error) => {
         console.error('Error retrieving users:', error);
-      },
-      complete: () => {
-        console.log("SHOWING USERS LIST: ");
-        console.table(this.userList);
-      },
+      }
     });
   }
 

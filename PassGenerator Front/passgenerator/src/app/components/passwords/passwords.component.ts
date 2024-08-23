@@ -17,6 +17,8 @@ export class PasswordsComponent implements OnInit {
 
   defaultTitle: string = 'PassGenerator - Passwords';
   accountList: Cuenta[] = [];
+  userLoggedIn: string  = localStorage.getItem('user') || '';
+  //TODO: Comprobar que userLoggedin no este vacio antes de enviar peticion al back
 
   ngOnInit(): void {
     this.title.setTitle(this.defaultTitle);
@@ -25,11 +27,9 @@ export class PasswordsComponent implements OnInit {
   }
 
   getAll():void {
-    this.service.getAllAccounts().subscribe({
+    this.service.getAllAccountsByUser(this.userLoggedIn).subscribe({
       next: (accounts) => {
-        console.table(accounts);
         accounts.forEach((account) => {
-          console.log(account);
           const accountsParsed = cuentaSchema.safeParse(account);
           if(accountsParsed.success){
             this.accountList.push(accountsParsed.data);
@@ -37,8 +37,6 @@ export class PasswordsComponent implements OnInit {
             console.error('Invalid account:', accountsParsed.error);
           }
         })
-        
-        
       },
       error: (error) => {
         console.error('Error getting accounts:', error);

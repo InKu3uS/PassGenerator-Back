@@ -10,6 +10,8 @@ import { Cuenta, cuentaSchema } from '../../model/cuentaSchema';
   styleUrl: './passwords.component.css'
 })
 export class PasswordsComponent implements OnInit {
+
+
  
   private titleService = inject(TitleService);
   private service = inject(AccountsService);
@@ -18,15 +20,44 @@ export class PasswordsComponent implements OnInit {
   defaultTitle: string = 'PassGenerator - Passwords';
   accountList: Cuenta[] = [];
   userLoggedIn: string  = localStorage.getItem('user') || '';
-  //TODO: Comprobar que userLoggedin no este vacio antes de enviar peticion al back
+  actualDate: string = '';
+  
+  //TODO: Funcionalidad para editar contraseñas.
+  //TODO: Funcionalidad para borrar contraseñas.
+
 
   ngOnInit(): void {
     this.title.setTitle(this.defaultTitle);
     this.titleService.blurTitle(this.defaultTitle);
+    this.getFechaActual();
     this.getAll();
   }
 
+  showPassword(index:number): void {
+      let input: HTMLInputElement | null = document.querySelector('#password'+index);
+      if (input) {
+        input.setAttribute('type', 'text');
+      }
+  }
+
+  hidePassword(index:number): void {
+    let input: HTMLInputElement | null = document.querySelector('#password'+index);
+      if (input) {
+        input.setAttribute('type', 'password');
+      }
+  }
+
+  getFechaActual(){
+    let today = new Date();
+    this.actualDate = today.toLocaleDateString();
+  }
+
+
   getAll():void {
+    if (this.userLoggedIn == '') {
+      console.error('No sesión de usuario iniciada');
+      return;
+    }
     this.service.getAllAccountsByUser(this.userLoggedIn).subscribe({
       next: (accounts) => {
         accounts.forEach((account) => {
@@ -42,7 +73,6 @@ export class PasswordsComponent implements OnInit {
         console.error('Error getting accounts:', error);
       }
     })
-      
   }
 
 }

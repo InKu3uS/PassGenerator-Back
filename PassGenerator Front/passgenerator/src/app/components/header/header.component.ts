@@ -18,6 +18,8 @@ export class HeaderComponent implements OnInit{
   showMobileMenu = false;
   isLoggedIn = false;
 
+  //TODO: Ocultar Lista de usuario del header para los usuarios normales.
+
   ngOnInit(): void {
     this.isLoggedIn = this.authService.isLoggedIn();
   }

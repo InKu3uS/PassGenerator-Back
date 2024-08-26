@@ -58,6 +58,12 @@ export class SavePasswordComponent implements OnInit {
     let site = this.cuentaForm.get('site')?.value;
     let password = this.cuentaForm.get('password')?.value;
     let expiration = this.cuentaForm.get('expiration')?.value;
+    
+    if(expiration){
+      expiration = expiration.split('-').reverse().join('/');
+      console.log(expiration);
+    }
+    
     let cuenta: Cuenta = {
       user:{
         uuid: this.user?.uuid ?? ""

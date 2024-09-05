@@ -1,12 +1,9 @@
 package com.neftali.passgenerator.auth;
 
-import com.neftali.passgenerator.dto.EmailDTO;
 import com.neftali.passgenerator.exceptions.UserNotFoundException;
-import com.neftali.passgenerator.service.IEmailService;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

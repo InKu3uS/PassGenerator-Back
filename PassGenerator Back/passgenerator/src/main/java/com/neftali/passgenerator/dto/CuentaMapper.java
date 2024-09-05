@@ -1,5 +1,4 @@
 package com.neftali.passgenerator.dto;
-
 import com.neftali.passgenerator.entity.Cuenta;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

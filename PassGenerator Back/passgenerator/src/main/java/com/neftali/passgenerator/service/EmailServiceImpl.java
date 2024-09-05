@@ -1,19 +1,14 @@
 package com.neftali.passgenerator.service;
-
 import com.neftali.passgenerator.dto.EmailDTO;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
-
-import java.io.ByteArrayOutputStream;
-import java.io.File;
 
 @Service
 public class EmailServiceImpl implements IEmailService {
@@ -40,6 +35,7 @@ public class EmailServiceImpl implements IEmailService {
             helper.setSubject(emailDTO.getSubject());
 
             Context context = new Context();
+            context.setVariable("recipent", emailDTO.getRecipent());
             context.setVariable("message", emailDTO.getMessage());
             String template = templateEngine.process("welcome", context);
             helper.setText(template, true);

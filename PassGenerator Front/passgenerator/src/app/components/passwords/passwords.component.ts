@@ -11,8 +11,6 @@ import { Cuenta, cuentaSchema } from '../../model/cuentaSchema';
 })
 export class PasswordsComponent implements OnInit {
 
-
- 
   private titleService = inject(TitleService);
   private service = inject(AccountsService);
   private title = inject(Title);
@@ -21,10 +19,6 @@ export class PasswordsComponent implements OnInit {
   accountList: Cuenta[] = [];
   userLoggedIn: string  = localStorage.getItem('user') || '';
   actualDate: string = '';
-  
-  //TODO: Funcionalidad para editar contraseñas.
-  //TODO: Funcionalidad para borrar contraseñas.
-
 
   ngOnInit(): void {
     this.title.setTitle(this.defaultTitle);
@@ -72,7 +66,6 @@ export class PasswordsComponent implements OnInit {
       error: (error) => {
         console.error('Error getting accounts:', error);
       }
-    })
+    });
   }
-
 }

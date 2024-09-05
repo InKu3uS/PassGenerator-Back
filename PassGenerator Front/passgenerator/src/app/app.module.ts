@@ -15,6 +15,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { FaqComponent } from './components/faq/faq.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DateComparerPipe } from './pipes/date-comparer.pipe';
+import { RegisterComponent } from './components/register/register.component';
 
 
 
@@ -31,6 +32,7 @@ import { DateComparerPipe } from './pipes/date-comparer.pipe';
     SavePasswordComponent,
     FaqComponent,
     DateComparerPipe,
+    RegisterComponent,
   ],
   imports: [
     BrowserModule,

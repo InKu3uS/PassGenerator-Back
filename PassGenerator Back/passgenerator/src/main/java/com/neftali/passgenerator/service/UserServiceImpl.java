@@ -1,6 +1,7 @@
 package com.neftali.passgenerator.service;
 import com.neftali.passgenerator.entity.User;
 import com.neftali.passgenerator.exceptions.UserNotFoundException;
+import com.neftali.passgenerator.repository.CuentaRepository;
 import com.neftali.passgenerator.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,9 @@ public class UserServiceImpl implements UserService{
 
     @Autowired
     private UserRepository repository;
+
+    @Autowired
+    private CuentaRepository cuentaRepository;
 
     @Override
     @Transactional(readOnly = true)
@@ -63,7 +67,10 @@ public class UserServiceImpl implements UserService{
     }
     @Override
     @Transactional
-    public void delete(User user) throws UserNotFoundException{
+    public void delete(User user) throws UserNotFoundException {
+        if(user.getCuentas() != null){
+            cuentaRepository.deleteByUserUuid(user.getUuid());
+        }
         repository.deleteByUuid(user.getUuid());
     }
 

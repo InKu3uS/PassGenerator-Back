@@ -17,4 +17,5 @@ public interface CuentaRepository extends JpaRepository<Cuenta, String> {
 
     void deleteBySite(String site) throws CuentaNotFoundException;
 
+    void deleteByUserUuid(String userUuid);
 }

@@ -14,6 +14,12 @@ export class AppComponent implements OnInit {
 
   title = 'passgenerator';
   ngOnInit(): void {
-    
-  } 
+
+  }
+  //TODO: Guardar rol de usuario al iniciar sesión.
+  //TODO: Descargar la lista de cuentas (JSON,CSV, Excel, etc...).
+  //TODO: Implementar sistema de correos electronicos.
+  //TODO: Funcionalidad para editar contraseñas.
+  //TODO: Funcionalidad para borrar contraseñas.
+  //TODO: Enviar correo cuando haya contraseña a punto de caducar?
 }

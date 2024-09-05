@@ -1,4 +1,4 @@
-import { Component, inject, Injectable, OnChanges, OnInit, SimpleChanges, TemplateRef, ViewContainerRef } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth/auth.service';
 
@@ -23,7 +23,7 @@ export class HeaderComponent implements OnInit{
   ngOnInit(): void {
     this.isLoggedIn = this.authService.isLoggedIn();
   }
-  
+
   changeLogin(){
     this.isLoggedIn = this.authService.isLoggedIn();
   }

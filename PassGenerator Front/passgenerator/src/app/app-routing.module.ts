@@ -8,6 +8,7 @@ import { GeneratePasswordComponent } from './components/generate-password/genera
 import { SavePasswordComponent } from './components/save-password/save-password.component';
 import { FaqComponent } from './components/faq/faq.component';
 import { authGuard } from './guards/auth.guard';
+import { RegisterComponent } from './components/register/register.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -16,6 +17,7 @@ const routes: Routes = [
   { path: 'passwords', component: PasswordsComponent, canActivate: [authGuard]},
   { path: 'users/list', component: UserListComponent, canActivate: [authGuard]},
   { path: 'login', component: LoginComponent},
+  { path: 'register', component: RegisterComponent},
   { path: 'generate', component: GeneratePasswordComponent},
   { path: 'save', component: SavePasswordComponent, canActivate: [authGuard] },
   { path: 'faq', component: FaqComponent },

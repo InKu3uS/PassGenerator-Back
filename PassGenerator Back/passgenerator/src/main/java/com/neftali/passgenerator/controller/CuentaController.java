@@ -72,7 +72,6 @@ public class CuentaController {
         }else{
             return ResponseEntity.notFound().build();
         }
-
     }
 
 }

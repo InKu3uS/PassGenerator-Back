@@ -16,6 +16,7 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
 
   }
+  //TODO: Implementacion de borrado de cuenta con SweetAlert2.
   //TODO: Guardar rol de usuario al iniciar sesión.
   //TODO: Descargar la lista de cuentas (JSON,CSV, Excel, etc...).
   //TODO: Implementar sistema de correos electronicos.

@@ -24,6 +24,10 @@ export class AccountsService {
     return this.http.get<Cuenta[]>(`${this.apiUrl}/user/${mail}`, {headers: this.headers});
   }
 
+  deleteAccount(site:string): Observable<string> {
+    return this.http.delete<string>(`${this.apiUrl}/${site}`, {headers: this.headers, responseType: 'text' as 'json'});
+  }
+
   savePassword(password:string) {
     this.generatedPassword = password;
   }

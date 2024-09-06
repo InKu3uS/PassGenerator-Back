@@ -3,6 +3,8 @@ import { TitleService } from '../../services/title/title.service';
 import { AccountsService } from '../../services/accounts/accounts.service';
 import { Title } from '@angular/platform-browser';
 import { Cuenta, cuentaSchema } from '../../model/cuentaSchema';
+import Swal from 'sweetalert2';
+import { boolean } from 'zod';
 
 @Component({
   selector: 'app-passwords',
@@ -39,6 +41,48 @@ export class PasswordsComponent implements OnInit {
       if (input) {
         input.setAttribute('type', 'password');
       }
+  }
+
+  deleteAccount(site:string) {
+    Swal.fire({
+      title: "¿Desea borrar esta cuenta?",
+      text: "Este cambio es irreversible",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Borrar",
+      confirmButtonColor: "#3085d6",
+      cancelButtonText: "Cancelar",
+      cancelButtonColor: "#d33"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.service.deleteAccount(site).subscribe({
+          next: () => {
+            this.accountList = this.accountList.filter(acc => acc.site!== site);
+            Swal.fire({
+              title: "Borrado",
+              text: "La cuenta se ha borrado con éxito.",
+              icon: "success"
+            });
+          },
+          error: (error) => {
+            console.error(`Error deleting account: ${site}`);
+            console.error(error);
+            Swal.fire({
+              title: "Error",
+              text: "No se ha podido borrar la cuenta",
+              icon: "error"
+            });
+          }
+        });
+      }
+      if (result.isDismissed){
+        Swal.fire({
+          title: "Cancelado",
+          text: "La operación fue cancelada",
+          icon: "info"
+        });
+      }
+    });
   }
 
   getFechaActual(){

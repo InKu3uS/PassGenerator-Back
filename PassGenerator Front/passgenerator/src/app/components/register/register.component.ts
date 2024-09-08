@@ -5,6 +5,7 @@ import { AuthService } from '../../services/auth/auth.service';
 import { Title } from '@angular/platform-browser';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { createUser, User } from '../../model/UserSchema';
+import { SwalService } from '../../services/swal/swal.service';
 
 @Component({
   selector: 'app-register',
@@ -17,6 +18,7 @@ export class RegisterComponent implements OnInit {
   private route = inject(Router);
   private service = inject(AuthService);
   private title = inject(Title);
+  private swal = inject(SwalService);
 
   private defaultTitle: string = 'PassGenerator - Registro';
 
@@ -61,8 +63,7 @@ export class RegisterComponent implements OnInit {
 
     this.service.register(user).subscribe({
       next: (response) => {
-        console.log('User registered successfully');
-        this.route.navigate(['/login']);
+        this.route.navigate(['/login']).then(() => {this.swal.registeredUser(username)});
       },
       error: (error) => {
         console.error('Error registering user:', error);

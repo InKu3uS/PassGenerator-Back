@@ -19,7 +19,6 @@ export class DateComparerPipe implements PipeTransform {
     const timeDiff = parseDate1.getTime() - parseDate2.getTime();
 
     const daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
-    console.log(daysDiff);
     return daysDiff;
   }
 

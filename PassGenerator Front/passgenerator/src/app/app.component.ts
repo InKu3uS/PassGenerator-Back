@@ -16,10 +16,12 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
 
   }
+  //TODO: Arreglar problema responsive con login.
+  //TODO: Mover la funcionalidad de exportaciones a un servicio a parte.
+  //TODO: Implementacion de componente 'Mi Perfil'.
+  //TODO: Implementacion de cambio de contraseña para la cuenta de usuario.
+  //TODO: Implementacion de borrado de cuenta con SweetAlert2.
   //TODO: Guardar rol de usuario al iniciar sesión.
-  //TODO: Descargar la lista de cuentas (JSON,CSV, Excel, etc...).
-  //TODO: Implementar sistema de correos electronicos.
   //TODO: Funcionalidad para editar contraseñas.
-  //TODO: Funcionalidad para borrar contraseñas.
   //TODO: Enviar correo cuando haya contraseña a punto de caducar?
 }

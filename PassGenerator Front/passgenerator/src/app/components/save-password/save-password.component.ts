@@ -4,7 +4,7 @@ import { UsersService } from '../../services/users/users.service';
 import { User } from '../../model/UserSchema';
 import { createCuenta, Cuenta } from '../../model/cuentaSchema';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { date } from 'zod';
+import { SwalService } from '../../services/swal/swal.service';
 
 @Component({
   selector: 'app-save-password',
@@ -17,6 +17,7 @@ export class SavePasswordComponent implements OnInit {
   user: User | undefined;
   private service = inject(AccountsService);
   private userService = inject(UsersService);
+  private swal = inject(SwalService);
 
   password: string = "";
 
@@ -61,7 +62,6 @@ export class SavePasswordComponent implements OnInit {
     
     if(expiration){
       expiration = expiration.split('-').reverse().join('/');
-      console.log(expiration);
     }
     
     let cuenta: Cuenta = {
@@ -80,9 +80,9 @@ export class SavePasswordComponent implements OnInit {
     }
     this.service.save(cuenta).subscribe({
       next: (response) => {
-        console.log(response.body.message);
-        console.log(response.status);
         this.cuentaForm.reset();
+        this.swal.savedAccount(site);
+
       },
       error: (error) => {
         console.error(error);

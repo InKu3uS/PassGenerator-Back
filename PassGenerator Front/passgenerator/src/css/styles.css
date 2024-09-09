@@ -608,6 +608,10 @@ video {
   visibility: collapse;
 }
 
+.fixed {
+  position: fixed;
+}
+
 .absolute {
   position: absolute;
 }
@@ -663,6 +667,14 @@ video {
 
 .m-5 {
   margin: 1.25rem;
+}
+
+.m-4 {
+  margin: 1rem;
+}
+
+.m-1 {
+  margin: 0.25rem;
 }
 
 .mx-20 {
@@ -822,6 +834,10 @@ video {
 
 .mt-px {
   margin-top: 1px;
+}
+
+.mb-12 {
+  margin-bottom: 3rem;
 }
 
 .block {
@@ -1964,6 +1980,10 @@ video {
   opacity: 0.1;
 }
 
+.invalid\:hover\:bg-none:hover:invalid {
+  background-image: none;
+}
+
 .focus\:bg-violet-600:focus {
   --tw-bg-opacity: 1;
   background-color: rgb(124 58 237 / var(--tw-bg-opacity));
@@ -2024,13 +2044,52 @@ video {
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
+.enabled\:transition-all:enabled {
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+.enabled\:hover\:bg-orange-700:hover:enabled {
+  --tw-bg-opacity: 1;
+  background-color: rgb(194 65 12 / var(--tw-bg-opacity));
+}
+
+.enabled\:hover\:font-semibold:hover:enabled {
+  font-weight: 600;
+}
+
+.enabled\:active\:translate-y-1:active:enabled {
+  --tw-translate-y: 0.25rem;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+
 .disabled\:border-0:disabled {
   border-width: 0px;
+}
+
+.disabled\:text-red-800:disabled {
+  --tw-text-opacity: 1;
+  color: rgb(153 27 27 / var(--tw-text-opacity));
+}
+
+.disabled\:transition-none:disabled {
+  transition-property: none;
 }
 
 .disabled\:hover\:bg-slate-500:hover:disabled {
   --tw-bg-opacity: 1;
   background-color: rgb(100 116 139 / var(--tw-bg-opacity));
+}
+
+.disabled\:hover\:bg-black:hover:disabled {
+  --tw-bg-opacity: 1;
+  background-color: rgb(0 0 0 / var(--tw-bg-opacity));
+}
+
+.disabled\:hover\:bg-red-600:hover:disabled {
+  --tw-bg-opacity: 1;
+  background-color: rgb(220 38 38 / var(--tw-bg-opacity));
 }
 
 .peer:checked ~ .peer-checked\:opacity-100 {
@@ -2123,6 +2182,12 @@ video {
   }
 }
 
+@media not all and (min-width: 1024px) {
+  .max-lg\:w-\[35\%\] {
+    width: 35%;
+  }
+}
+
 @media not all and (min-width: 768px) {
   .max-md\:mb-4 {
     margin-bottom: 1rem;
@@ -2163,6 +2228,10 @@ video {
 @media not all and (min-width: 640px) {
   .max-sm\:hidden {
     display: none;
+  }
+
+  .max-sm\:w-\[80\%\] {
+    width: 80%;
   }
 }
 

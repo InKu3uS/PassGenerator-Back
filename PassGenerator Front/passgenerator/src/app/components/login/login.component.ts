@@ -3,8 +3,8 @@ import { TitleService } from '../../services/title/title.service';
 import { Title } from '@angular/platform-browser';
 import { AuthService } from '../../services/auth/auth.service';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { HeaderComponent } from '../header/header.component';
 
 @Component({
   selector: 'app-login',
@@ -19,19 +19,23 @@ export class LoginComponent implements OnInit {
 
   private defaultTitle: string = 'PassGenerator - Login';
 
+  errorLogin = '';
+
+  loginForm: FormGroup = new FormGroup({
+    email: new FormControl(null, [Validators.required, Validators.email]),
+    password: new FormControl(null, Validators.required),
+  });
+
   ngOnInit(): void {
     this.title.setTitle(this.defaultTitle);
     this.titleService.blurTitle(this.defaultTitle);
-
     this.redirectIfLoggedIn();
   }
 
   login(): void {
     const helper = new JwtHelperService();
-    const mail = (document.getElementById('email') as HTMLInputElement)
-      .value;
-    const password = (document.getElementById('password') as HTMLInputElement)
-      .value;
+    let mail = this.loginForm.get('email')?.value;
+    let password = this.loginForm.get('password')?.value;
 
     this.service.login(mail, password).subscribe({
       next: (session) => {
@@ -43,10 +47,10 @@ export class LoginComponent implements OnInit {
         this.route.navigate(['/home']).then(()=> {location.reload()});
       },
       error: (error) => {
-        if(error.status === 403){
-          console.log('Invalid credentials. Please try again.');
+        if(error.status === 404){
+          this.errorLogin = 'Email o contraseña incorrectas. Verifica los datos e intentalo de nuevo.';
         }else{
-          console.error('Error logging in', error);
+          this.errorLogin = 'Ha ocurrido un error al realizar el login. Vuelva a intentarlo.';
         }
       },
     });

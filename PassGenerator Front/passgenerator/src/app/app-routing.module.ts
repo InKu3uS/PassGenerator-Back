@@ -9,6 +9,7 @@ import { SavePasswordComponent } from './components/save-password/save-password.
 import { FaqComponent } from './components/faq/faq.component';
 import { authGuard } from './guards/auth.guard';
 import { RegisterComponent } from './components/register/register.component';
+import { MyProfileComponent } from './components/my-profile/my-profile.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -16,6 +17,7 @@ const routes: Routes = [
   { path: 'home', component: HomeComponent},
   { path: 'passwords', component: PasswordsComponent, canActivate: [authGuard]},
   { path: 'users/list', component: UserListComponent, canActivate: [authGuard]},
+  { path: 'profile', component: MyProfileComponent, canActivate: [authGuard]},
   { path: 'login', component: LoginComponent},
   { path: 'register', component: RegisterComponent},
   { path: 'generate', component: GeneratePasswordComponent},

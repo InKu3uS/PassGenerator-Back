@@ -44,7 +44,7 @@ public class CuentaController {
     }
 
     @PostMapping(value = {"/save"})
-    public ResponseEntity<Map<String,String>> save(@RequestBody Cuenta cuenta) throws CuentaNotFoundException, UserNotFoundException {
+    public ResponseEntity<Map<String,String>> save(@RequestBody Cuenta cuenta) {
         Map<String, String> response = new HashMap<>();
         try{
             service.save(cuenta);

@@ -4,6 +4,7 @@ import com.neftali.passgenerator.exceptions.UserNotFoundException;
 import com.neftali.passgenerator.repository.CuentaRepository;
 import com.neftali.passgenerator.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,6 +21,9 @@ public class UserServiceImpl implements UserService{
 
     @Autowired
     private CuentaRepository cuentaRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
     @Transactional(readOnly = true)
@@ -53,18 +57,28 @@ public class UserServiceImpl implements UserService{
 
     @Override
     @Transactional
-    public void save(User user) throws UserNotFoundException {
-        Optional<User> userExists = repository.findByEmail(user.getEmail());
+    public void editUsername(String email, String username) throws UserNotFoundException {
+        Optional<User> userExists = repository.findByEmail(email);
         if(userExists.isPresent()){
-            userExists.get().setUsername(user.getUsername());
-            userExists.get().setEmail(user.getEmail());
-            userExists.get().setPassword(user.getPassword());
+            userExists.get().setUsername(username);
             repository.save(userExists.get());
         }else {
-            user.setCreateTime(getFecha());
-            repository.save(user);
+            throw new UserNotFoundException("Usuario no encontrado");
         }
     }
+
+    @Override
+    @Transactional
+    public void editPassword(String email, String password) throws UserNotFoundException {
+        Optional<User> userExists = repository.findByEmail(email);
+        if(userExists.isPresent()){
+            userExists.get().setPassword(passwordEncoder.encode(password));
+            repository.save(userExists.get());
+        }else {
+            throw new UserNotFoundException("Usuario no encontrado");
+        }
+    }
+
     @Override
     @Transactional
     public void delete(User user) throws UserNotFoundException {
@@ -74,10 +88,19 @@ public class UserServiceImpl implements UserService{
         repository.deleteByUuid(user.getUuid());
     }
 
+    @Override
+    public boolean verifyPassword(String email, String password) throws UserNotFoundException {
+        Optional<User> user = repository.findByEmail(email);
+        if(user.isPresent()){
+            return passwordEncoder.matches(password, user.get().getPassword());
+        }else {
+            throw new UserNotFoundException("Usuario no encontrado");
+        }
+    }
+
     public String getFecha(){
         LocalDate creationDate = LocalDate.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         return creationDate.format(formatter);
     }
-
 }

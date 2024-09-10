@@ -16,6 +16,7 @@ import { FaqComponent } from './components/faq/faq.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DateComparerPipe } from './pipes/date-comparer.pipe';
 import { RegisterComponent } from './components/register/register.component';
+import { MyProfileComponent } from './components/my-profile/my-profile.component';
 
 
 
@@ -33,6 +34,7 @@ import { RegisterComponent } from './components/register/register.component';
     FaqComponent,
     DateComparerPipe,
     RegisterComponent,
+    MyProfileComponent,
   ],
   imports: [
     BrowserModule,

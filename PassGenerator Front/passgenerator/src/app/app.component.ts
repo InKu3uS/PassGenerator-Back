@@ -21,5 +21,6 @@ export class AppComponent implements OnInit {
   //TODO: Implementacion de borrado de cuenta con SweetAlert2.
   //TODO: Guardar rol de usuario al iniciar sesión.
   //TODO: Funcionalidad para editar contraseñas.
+  //TODO: Ocultar Lista de usuario del header para los usuarios normales.
   //TODO: Enviar correo cuando haya contraseña a punto de caducar?
 }

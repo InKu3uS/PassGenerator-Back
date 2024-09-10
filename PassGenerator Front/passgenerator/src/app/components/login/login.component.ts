@@ -39,10 +39,8 @@ export class LoginComponent implements OnInit {
 
     this.service.login(mail, password).subscribe({
       next: (session) => {
-        console.log('Logged in successfully');
         localStorage.setItem('token', session.token);
         const decodedToken = helper.decodeToken(session.token);
-        console.log(decodedToken);
         localStorage.setItem('user', decodedToken.sub);
         this.route.navigate(['/home']).then(()=> {location.reload()});
       },

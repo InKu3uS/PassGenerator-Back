@@ -13,8 +13,11 @@ public interface UserService {
 
     User findByEmail(String email) throws UserNotFoundException;
 
-    void save(User user) throws UserNotFoundException;
+    void editUsername(String email, String username) throws UserNotFoundException;
+
+    void editPassword(String email, String password) throws UserNotFoundException;
 
     void delete(User user) throws UserNotFoundException;
 
+    boolean verifyPassword(String email, String password) throws UserNotFoundException;
 }

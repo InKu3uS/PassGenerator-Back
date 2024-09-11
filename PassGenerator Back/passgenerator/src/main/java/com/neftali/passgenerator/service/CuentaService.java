@@ -21,4 +21,6 @@ public interface CuentaService {
     void save(Cuenta cuenta) throws CuentaNotFoundException, UserNotFoundException;
 
     void delete(String site) throws CuentaNotFoundException;
+
+    long countByUserMail(String mail) throws UserNotFoundException;
 }

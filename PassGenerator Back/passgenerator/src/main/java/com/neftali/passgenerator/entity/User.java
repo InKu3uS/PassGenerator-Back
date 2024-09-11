@@ -38,7 +38,7 @@ public class User implements UserDetails {
 
     private Role role;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.REMOVE)
     private Set<Cuenta> cuentas;
 
     @Override

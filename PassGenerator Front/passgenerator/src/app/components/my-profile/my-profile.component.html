@@ -9,7 +9,25 @@
         <!-- FORMULARIO DE CAMBIO DE NOMBRE DE USUARIO-->
         <form [formGroup]="usernameForm" (submit)="changeUsername()">
         <div class="flex flex-col gap-4 p-6">         
-          <div class="relative h-11 w-[100%] mb-8">
+          
+          <div class="relative h-11 w-[100%]">
+            <p
+              class="peer h-full w-full rounded-md bg-white px-3 py-3 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50"
+            >{{user?.createTime}}</p>
+            <label class="font-semibold pointer-events-none absolute left-0 -top-2.5 flex h-full w-full select-none text-orange-600 leading-tight text-blue-gray-400 transition-all before:pointer-events-none before:mt-[6.5px] before:mr-1 before:block before:h-1.5 before:w-2.5 before:rounded-tl-md before:transition-all after:pointer-events-none after:mt-[7.5px] after:ml-1 after:block after:h-1.5 after:w-2.5 after:flex-grow after:rounded-tr-md after:transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:leading-[4.1] peer-placeholder-shown:text-blue-gray-500 peer-placeholder-shown:before:border-transparent peer-placeholder-shown:after:border-transparent peer-focus:text-[15px] peer-focus:text-slate-800 peer-focus:leading-tight peer-focus:before:border-t-2 peer-focus:before:border-l-2 peer-focus:after:border-t-2 peer-focus:after:border-r-2 peer-focus:after:text-[22px]">
+              Miembro desde
+            </label>
+          </div>
+          <div class="relative h-11 w-[100%]">
+            <p
+              class="peer h-full w-full rounded-md bg-white px-3 py-3 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50"
+            >{{totalAccounts}} contraseñas guardadas</p>
+            <label class="font-semibold pointer-events-none absolute left-0 -top-2.5 flex h-full w-full select-none text-orange-600 leading-tight text-blue-gray-400 transition-all before:pointer-events-none before:mt-[6.5px] before:mr-1 before:block before:h-1.5 before:w-2.5 before:rounded-tl-md before:transition-all after:pointer-events-none after:mt-[7.5px] after:ml-1 after:block after:h-1.5 after:w-2.5 after:flex-grow after:rounded-tr-md after:transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:leading-[4.1] peer-placeholder-shown:text-blue-gray-500 peer-placeholder-shown:before:border-transparent peer-placeholder-shown:after:border-transparent peer-focus:text-[15px] peer-focus:text-slate-800 peer-focus:leading-tight peer-focus:before:border-t-2 peer-focus:before:border-l-2 peer-focus:after:border-t-2 peer-focus:after:border-r-2 peer-focus:after:text-[22px]">
+              Contraseñas
+            </label>
+          </div>
+
+          <div *ngIf="permitUsernameEdit" class="relative h-11 w-[100%] mb-8">
             <input id="username" formControlName="username"
               class="peer h-full w-full rounded-md bg-white px-3 py-3 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50"
               placeHolder=" "
@@ -26,14 +44,6 @@
             </div>   
           </div>
 
-          <div class="relative h-11 w-[100%]">
-            <p
-              class="peer h-full w-full rounded-md bg-white px-3 py-3 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50"
-            >{{user?.createTime}}</p>
-            <label class="font-semibold pointer-events-none absolute left-0 -top-2.5 flex h-full w-full select-none text-orange-600 leading-tight text-blue-gray-400 transition-all before:pointer-events-none before:mt-[6.5px] before:mr-1 before:block before:h-1.5 before:w-2.5 before:rounded-tl-md before:transition-all after:pointer-events-none after:mt-[7.5px] after:ml-1 after:block after:h-1.5 after:w-2.5 after:flex-grow after:rounded-tr-md after:transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:leading-[4.1] peer-placeholder-shown:text-blue-gray-500 peer-placeholder-shown:before:border-transparent peer-placeholder-shown:after:border-transparent peer-focus:text-[15px] peer-focus:text-slate-800 peer-focus:leading-tight peer-focus:before:border-t-2 peer-focus:before:border-l-2 peer-focus:after:border-t-2 peer-focus:after:border-r-2 peer-focus:after:text-[22px]">
-              Miembro desde
-            </label>
-          </div>
         </div>
         <div *ngIf="permitUsernameEdit" class="flex justify-center">
           <div class="mb-5 flex justify-center">
@@ -81,9 +91,9 @@
                 <p>{{errorEditPassword}}</p>
               </div> 
             </div>
-                 
           </div>
         </div>
+
         <div class="grid justify-center my-2">            
           <button 
           class="text-white font-normal p-4 mb-3 hover:text-white border border-violet-600 enabled:hover:bg-violet-700 enabled:hover:font-semibold focus:ring-4 focus:outline-none  focus:ring-violet-300 rounded-lg text-md py-2.5 text-center enabled:transition-all enabled:active:translate-y-1"
@@ -97,11 +107,18 @@
       <div class="flex justify-center gap-3">
         <button
           class="text-white font-normal p-4 mb-3 hover:text-white border border-orange-600 enabled:hover:bg-orange-700 enabled:hover:font-semibold focus:ring-4 focus:outline-none  focus:ring-orange-300 rounded-lg text-md py-2.5 text-center enabled:transition-all enabled:active:translate-y-1"
-          type="submit" data-ripple-light="true" (click)="editUsername()">Editar nombre
+          type="button" data-ripple-light="true" (click)="editUsername()">Editar nombre
         </button>
         <button
           class="text-white font-normal p-4 mb-3 hover:text-white border border-violet-600 enabled:hover:bg-violet-700 enabled:hover:font-semibold focus:ring-4 focus:outline-none  focus:ring-violet-300 rounded-lg text-md py-2.5 text-center enabled:transition-all enabled:active:translate-y-1"
-          type="submit" data-ripple-light="true" (click)="editPassword()">Editar contraseña
+          type="button" data-ripple-light="true" (click)="editPassword()">Editar contraseña
+        </button>
+      </div>
+      <!-- BOTON PARA ELIMINAR LA CUENTA DE USUARIO-->
+      <div class="flex justify-center gap-3">
+        <button
+          class="text-white font-normal p-4 mb-3 hover:text-white border border-red-600 enabled:hover:bg-red-700 enabled:hover:font-semibold focus:ring-4 focus:outline-none  focus:ring-red-300 rounded-lg text-md py-2.5 text-center enabled:transition-all enabled:active:translate-y-1"
+          type="button" data-ripple-light="true" (click)="confirmPassword()">Eliminar cuenta
         </button>
       </div>
     </div>

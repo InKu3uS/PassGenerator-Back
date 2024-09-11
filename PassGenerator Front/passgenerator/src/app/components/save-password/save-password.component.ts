@@ -82,7 +82,7 @@ export class SavePasswordComponent implements OnInit {
       next: (response) => {
         this.cuentaForm.reset();
         this.swal.savedAccount(site);
-
+        this.service.resetPassword();
       },
       error: (error) => {
         console.error(error);

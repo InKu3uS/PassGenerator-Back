@@ -43,4 +43,8 @@ editPassword(email: string, password: string) {
   return this.http.put(`${this.apiUrl}/password`, null, {headers: this.headers, params: params});
 }
 
+deleteUser(email: string): Observable<any> {
+  return this.http.delete(`${this.apiUrl}/${email}`, {headers: this.headers, responseType: 'text' as 'json'});
+}
+
 }

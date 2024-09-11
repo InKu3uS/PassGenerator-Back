@@ -16,11 +16,8 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
 
   }
-  //TODO: Implementacion de componente 'Mi Perfil'.
-  //TODO: Implementacion de cambio de contraseña para la cuenta de usuario.
-  //TODO: Implementacion de borrado de cuenta con SweetAlert2.
-  //TODO: Guardar rol de usuario al iniciar sesión.
-  //TODO: Funcionalidad para editar contraseñas.
+  //TODO: Manera de copiar la contraseña o mostrar permanentemente al hacer click sobre el ojo.
   //TODO: Ocultar Lista de usuario del header para los usuarios normales.
   //TODO: Enviar correo cuando haya contraseña a punto de caducar?
+  //TODO: Guardar rol de usuario al iniciar sesión?.
 }

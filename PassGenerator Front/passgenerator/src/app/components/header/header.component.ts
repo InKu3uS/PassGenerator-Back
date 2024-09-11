@@ -12,8 +12,6 @@ import { UsersService } from '../../services/users/users.service';
 
 export class HeaderComponent implements OnInit{
 
-
-  private route = inject(Router);
   private authService = inject(AuthService);
   private userService = inject(UsersService);
 
@@ -44,7 +42,6 @@ export class HeaderComponent implements OnInit{
 
   logout() {
     this.authService.logout();
-    this.route.navigate(['/home']);
   }
 
   getUserName() {

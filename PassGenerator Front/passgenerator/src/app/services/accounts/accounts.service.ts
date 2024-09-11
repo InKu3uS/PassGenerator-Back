@@ -24,6 +24,10 @@ export class AccountsService {
     return this.http.get<Cuenta[]>(`${this.apiUrl}/user/${mail}`, {headers: this.headers});
   }
 
+  countAllAccountsByEmail(email:string): Observable<number> {
+    return this.http.get<number>(`${this.apiUrl}/count/${email}`, {headers: this.headers});
+  }
+
   deleteAccount(site:string): Observable<string> {
     return this.http.delete<string>(`${this.apiUrl}/${site}`, {headers: this.headers, responseType: 'text' as 'json'});
   }
@@ -34,6 +38,10 @@ export class AccountsService {
 
   getPassword(){
     return this.generatedPassword;
+  }
+
+  resetPassword(){
+    this.generatedPassword = "";
   }
 
   save(cuenta:Cuenta): Observable<any>{

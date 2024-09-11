@@ -15,6 +15,7 @@ export class PasswordsComponent implements OnInit {
 
   private titleService = inject(TitleService);
   private service = inject(AccountsService);
+
   private title = inject(Title);
   private export = inject(ExportService);
 
@@ -111,6 +112,7 @@ export class PasswordsComponent implements OnInit {
         console.error('Error getting accounts:', error);
       }
     });
+
   }
 
   exportJson(){

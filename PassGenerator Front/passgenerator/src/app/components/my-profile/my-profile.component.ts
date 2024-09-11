@@ -1,11 +1,14 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { TitleService } from '../../services/title/title.service';
 import { Title } from '@angular/platform-browser';
-import { ExportService } from '../../services/export/export.service';
 import { emptyUser, userWithoutUuidSchema } from '../../model/UserSchema';
 import { UsersService } from '../../services/users/users.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { catchError, map, Observable, of } from 'rxjs';
+import { AccountsService } from '../../services/accounts/accounts.service';
+import { SwalService } from '../../services/swal/swal.service';
+import Swal from 'sweetalert2';
+import { AuthService } from '../../services/auth/auth.service';
 
 @Component({
   selector: 'app-my-profile',
@@ -14,12 +17,15 @@ import { catchError, map, Observable, of } from 'rxjs';
 })
 export class MyProfileComponent implements OnInit {
   private titleService = inject(TitleService);
+  private authService = inject(AuthService);
   private title = inject(Title);
-  private export = inject(ExportService);
+  private accountService = inject(AccountsService);
   private userService = inject(UsersService);
+  private swal = inject(SwalService);
 
   emailLoggedIn = '';
   user: emptyUser | undefined;
+  totalAccounts: number = 0;
 
   defaultTitle: string = 'PassGenerator - Mi Perfil';
 
@@ -43,12 +49,24 @@ export class MyProfileComponent implements OnInit {
     this.titleService.blurTitle(this.defaultTitle);
     this.getMailLogged();
     this.getUser(this.emailLoggedIn);
+    this.getNumberOfAccounts(this.emailLoggedIn);
   }
 
   getMailLogged() {
     if (localStorage.getItem('user') != null) {
       this.emailLoggedIn = localStorage.getItem('user')!;
     }
+  }
+
+  getNumberOfAccounts(email: string) {
+    this.accountService.countAllAccountsByEmail(email).subscribe({
+      next: (count) => {
+        this.totalAccounts = count;
+      },
+      error: (error) => {
+        console.log(error);
+      },
+    });
   }
 
   setFormValues() {
@@ -128,7 +146,7 @@ verifyPassword(email: string, password: string): Observable<boolean> {
           console.log(response);
           this.getUser(this.emailLoggedIn);
           this.permitUsernameEdit = false;
-          //TODO: SweetAlert aqui.
+          this.swal.usernameSaved(username);
       },
       error: (error) => {
         console.error('Error:', error);
@@ -153,12 +171,100 @@ verifyPassword(email: string, password: string): Observable<boolean> {
             console.log("Respuesta: "+response);
             this.passwordForm.reset();
             this.permitPasswordEdit = false;
-            //TODO: SweetAlert aquí.
+            this.swal.passwordSaved();
           },
           error: (error) => {
             console.error('Error al actualizar la contraseña:', error);
-            //TODO: SweetAlert aquí.
           }
+        });
+      }
+    });
+  }
+
+  /**
+   * Se solicita la contraseña del usuario para acceder a "deleteAccount".
+   * 
+   * Si la contraseña no es correcta se muestra un mensaje indicandolo.
+   * 
+   * Si cancela se muestra un mensaje indicando que se ha cancelado el proceso.
+   * 
+   * Si la contraseña es correcta se llama a "deleteAccount".
+   */
+  confirmPassword(){
+    Swal.fire({
+      title: "Confirmar contraseña",
+      text: "Por seguridad, confirma tu contraseña.",
+      input: "password",
+      showCancelButton: true,
+      confirmButtonText: "Confirmar",
+      confirmButtonColor: "#3085d6",
+      cancelButtonText: "Cancelar",
+      cancelButtonColor: "#d33",
+      preConfirm: async (result) => {
+        try {
+          this.verifyPassword(this.emailLoggedIn, result).subscribe({
+            next: (isValid) =>{
+              if(isValid == true) {
+                this.deleteAccount();
+              } else {
+                Swal.fire({
+                  title: "Error",
+                  text: "La contraseña no coincide con la actual",
+                  icon: "error"
+                });
+                return;
+              }
+            },
+            error: (error) => {
+              console.error('Error al verificar la contraseña:', error);
+            }
+          })
+        } catch (error) {
+          Swal.fire({
+            title: "Error",
+            text: "Hubo un error al confirmar la contraseña",
+            icon: "error"
+          });
+        }
+      }
+    })
+  }
+
+  /**
+   * Dialogo que solicita confirmacion al usuario antes de llamar a "deleteUser" en el "userService".
+   * 
+   * Si el usuario confirma se llama a "deleteUser", si se borra la cuenta se muestra un mensaje, se cierra la sesion
+   * y se limpia el localStorage.
+   * 
+   * Si no se puede borrar se muestra un mensaje al usuario.
+   */
+  deleteAccount() {
+    Swal.fire({
+      title: "¿Desea borrar su cuenta?",
+      html: "Esto borrará todas las contraseñas que tuviera guardadas <br> Este cambio es irreversible",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Borrar",
+      confirmButtonColor: "#3085d6",
+      cancelButtonText: "Cancelar",
+      cancelButtonColor: "#d33"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.userService.deleteUser(this.emailLoggedIn).subscribe({
+          next: () => {
+            this.swal.userDeleted(this.user?.username!);
+            this.authService.logout();
+          },
+          error: (error) => {
+            console.error('Error al eliminar la cuenta:', error);
+          }
+        });
+      }
+      if (result.isDismissed){
+        Swal.fire({
+          title: "Cancelado",
+          text: "La operación fue cancelada",
+          icon: "info"
         });
       }
     });

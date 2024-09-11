@@ -94,6 +94,15 @@ public class CuentaServiceImpl implements CuentaService{
         repository.deleteBySite(site);
     }
 
+    @Override
+    public long countByUserMail(String mail) throws UserNotFoundException {
+        Optional<User> user = userRepository.findByEmail(mail);
+        if(user.isPresent()){
+            return repository.countByUser(user.get());
+        }
+        return 0;
+    }
+
     public String getFecha(){
         LocalDate creationDate = LocalDate.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");

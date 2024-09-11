@@ -43,6 +43,11 @@ public class CuentaController {
         return ResponseEntity.ok(service.findById(id));
     }
 
+    @GetMapping(value = {"/count/{mail}"})
+    public ResponseEntity<Long> countByUserMail(@PathVariable String mail) throws UserNotFoundException {
+        return ResponseEntity.ok(service.countByUserMail(mail));
+    }
+
     @PostMapping(value = {"/save"})
     public ResponseEntity<Map<String,String>> save(@RequestBody Cuenta cuenta) {
         Map<String, String> response = new HashMap<>();
@@ -73,5 +78,4 @@ public class CuentaController {
             return ResponseEntity.notFound().build();
         }
     }
-
 }

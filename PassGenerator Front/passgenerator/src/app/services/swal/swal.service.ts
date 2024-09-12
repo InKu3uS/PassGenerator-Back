@@ -52,6 +52,17 @@ export class SwalService {
     });
   }
 
+  copyToClipBoard(){
+    Swal.fire({
+      position: "bottom-end",
+      icon: "success",
+      title: "Copiado",
+      text: `La contraseña se ha copiado al portapapeles`,
+      showConfirmButton: false,
+      timer: 2000
+    });
+  }
+
   userDeleted(username: string){
     Swal.fire({
       position: "bottom-end",

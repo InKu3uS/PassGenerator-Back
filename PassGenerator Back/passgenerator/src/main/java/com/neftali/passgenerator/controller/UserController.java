@@ -74,13 +74,23 @@ public class UserController {
     }
 
     @DeleteMapping(value = {"/{email}"})
-    public ResponseEntity<String> delete(@PathVariable String email) throws UserNotFoundException {
+    public ResponseEntity<Map<String, String>> delete(@PathVariable String email) throws UserNotFoundException {
+        Map<String, String> response = new HashMap<>();
         User existingUser = service.findByEmail(email);
         if(existingUser.getUuid() != null){
-            service.delete(existingUser);
-            return ResponseEntity.ok("Usuario borrado con éxito");
+            try {
+                service.delete(existingUser);
+                response.put("status", "OK");
+                response.put("message", "Usuario borrado con éxito");
+                return ResponseEntity.status(HttpStatus.OK).body(response);
+            } catch (RuntimeException e) {
+                response.put("status", "500");
+                response.put("message", "No se ha podido borrar el usuario");
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+            }
         }else{
             return ResponseEntity.notFound().build();
         }
     }
 }
+

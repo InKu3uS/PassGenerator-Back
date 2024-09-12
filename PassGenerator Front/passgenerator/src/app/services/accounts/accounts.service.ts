@@ -29,7 +29,7 @@ export class AccountsService {
   }
 
   deleteAccount(site:string): Observable<string> {
-    return this.http.delete<string>(`${this.apiUrl}/${site}`, {headers: this.headers, responseType: 'text' as 'json'});
+    return this.http.delete<string>(`${this.apiUrl}/${site}`, {headers: this.headers});
   }
 
   savePassword(password:string) {

@@ -16,7 +16,8 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
 
   }
-  //TODO: Manera de copiar la contraseña o mostrar permanentemente al hacer click sobre el ojo.
+  //TODO: Componente para editar una cuenta.
+  //TODO: Registrar una cuenta nueva para un usuario con nombre repetido debería dar error.
   //TODO: Ocultar Lista de usuario del header para los usuarios normales.
   //TODO: Enviar correo cuando haya contraseña a punto de caducar?
   //TODO: Guardar rol de usuario al iniciar sesión?.

@@ -14,6 +14,7 @@ import { AuthService } from '../../services/auth/auth.service';
   selector: 'app-my-profile',
   templateUrl: './my-profile.component.html',
   styleUrl: './my-profile.component.css',
+  
 })
 export class MyProfileComponent implements OnInit {
   private titleService = inject(TitleService);

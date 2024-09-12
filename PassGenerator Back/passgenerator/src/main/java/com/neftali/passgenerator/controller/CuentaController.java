@@ -69,11 +69,20 @@ public class CuentaController {
     }
 
     @DeleteMapping(value = {"/{site}"})
-    public ResponseEntity<String> delete(@PathVariable String site) throws CuentaNotFoundException {
+    public ResponseEntity<Map<String, String>> delete(@PathVariable String site) throws CuentaNotFoundException {
+        Map<String,String> response = new HashMap<>();
         Cuenta cuentaExists = service.findBySite(site);
         if(cuentaExists.getId() != null){
-            service.delete(site);
-            return ResponseEntity.ok("Cuenta borrada con éxito");
+            try {
+                service.delete(site);
+                response.put("status", "OK");
+                response.put("message", "Cuenta borrada con éxito");
+                return ResponseEntity.status(HttpStatus.OK).body(response);
+            } catch (RuntimeException e) {
+                response.put("status", "500");
+                response.put("message", "No se ha podido borrar la cuenta");
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+            }
         }else{
             return ResponseEntity.notFound().build();
         }

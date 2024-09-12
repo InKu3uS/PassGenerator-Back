@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { AccountsService } from '../../services/accounts/accounts.service';
 import { Router } from '@angular/router';
+import { SwalService } from '../../services/swal/swal.service';
 
 @Component({
   selector: 'generate-password',
@@ -13,6 +14,7 @@ export class GeneratePasswordComponent {
 
   private service = inject(AccountsService);
   private router = inject(Router);
+  private swal = inject(SwalService);
 
   /**
    * Obtiene el valor del slide '#length-range' y lo guarda el 'passwordLength'.
@@ -48,7 +50,7 @@ export class GeneratePasswordComponent {
     let copyText = (document.getElementById("generatedPassword") as HTMLSpanElement).textContent;
     if(copyText !== null) {
       navigator.clipboard.writeText(copyText);
-    alert("¡Password copiado al portapapeles!: " + copyText);
+    this.swal.copyToClipBoard();
     }
   }
 

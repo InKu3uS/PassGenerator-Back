@@ -5,6 +5,7 @@ import Swal from 'sweetalert2';
   providedIn: 'root'
 })
 export class SwalService {
+  
 
   constructor() { }
 
@@ -30,6 +31,37 @@ export class SwalService {
     });
   }
 
+  updatedAccount(site: string) {
+    Swal.fire({
+      position: "bottom-end",
+      icon: "success",
+      title: "Cuenta modificada",
+      text: `La cuenta de ${site} se ha modificado con éxito`,
+      showConfirmButton: false,
+      timer: 2000
+    });
+  }
+
+  duplicateAccount(error: any) {
+    Swal.fire({
+      position: "center",
+      icon: "error",
+      title: `Cuenta duplicada`,
+      text: error.error.message,
+      showConfirmButton: true,
+    });
+  }
+
+  errorUpdateAccount(error:any){
+    Swal.fire({
+      position: "center",
+      icon: "error",
+      title: `Error al modificar la cuenta`,
+      text: error.error.message,
+      showConfirmButton: true,
+    });
+  }
+
   usernameSaved(username: string){
     Swal.fire({
       position: "bottom-end",
@@ -51,6 +83,8 @@ export class SwalService {
       timer: 2000
     });
   }
+
+  
 
   copyToClipBoard(){
     Swal.fire({

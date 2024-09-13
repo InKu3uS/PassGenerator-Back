@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { AccountsService } from '../../services/accounts/accounts.service';
 import { Router } from '@angular/router';
 import { SwalService } from '../../services/swal/swal.service';
+import { SharedService } from '../../services/shared/shared.service';
 
 @Component({
   selector: 'generate-password',
@@ -12,7 +13,7 @@ export class GeneratePasswordComponent {
 
   passwordLength: number = 25;
 
-  private service = inject(AccountsService);
+  private sharedService = inject(SharedService);
   private router = inject(Router);
   private swal = inject(SwalService);
 
@@ -192,7 +193,7 @@ excludeChars(base:string, exclude:string) {
   savePassword(){
     let generatedPassword = document.getElementById('generatedPassword') as HTMLSpanElement;
     if(generatedPassword.textContent != null) {
-      this.service.savePassword(generatedPassword.textContent);
+      this.sharedService.savePassword(generatedPassword.textContent);
       this.router.navigate(['/save']);
     }
   }

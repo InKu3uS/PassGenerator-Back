@@ -16,9 +16,8 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
 
   }
-  //TODO: Componente para editar una cuenta.
-  //TODO: Registrar una cuenta nueva para un usuario con nombre repetido debería dar error.
   //TODO: Ocultar Lista de usuario del header para los usuarios normales.
+  //TODO: Revisar todas las excepciones en el back.
   //TODO: Enviar correo cuando haya contraseña a punto de caducar?
   //TODO: Guardar rol de usuario al iniciar sesión?.
 }

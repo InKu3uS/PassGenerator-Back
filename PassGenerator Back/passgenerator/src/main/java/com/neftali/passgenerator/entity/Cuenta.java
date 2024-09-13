@@ -4,7 +4,10 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "cuentas")
+@Table(name = "cuentas",
+    uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"user_uuid", "site"})
+    })
 @Data
 @Builder
 @NoArgsConstructor
@@ -19,7 +22,7 @@ public class Cuenta {
     @JoinColumn(name = "user_uuid", referencedColumnName = "uuid")
     private User user;
 
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private String site;
 
     @Column(nullable = false)

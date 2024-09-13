@@ -3,6 +3,7 @@ package com.neftali.passgenerator.controller;
 import com.neftali.passgenerator.entity.Cuenta;
 import com.neftali.passgenerator.entity.User;
 import com.neftali.passgenerator.exceptions.CuentaNotFoundException;
+import com.neftali.passgenerator.exceptions.DuplicateAccountException;
 import com.neftali.passgenerator.exceptions.UserNotFoundException;
 import com.neftali.passgenerator.dto.CuentaDTO;
 import com.neftali.passgenerator.service.CuentaService;
@@ -43,6 +44,11 @@ public class CuentaController {
         return ResponseEntity.ok(service.findById(id));
     }
 
+    @PostMapping(value = {"/site/{site}"})
+    public ResponseEntity<Cuenta> findBySiteAndUser(@RequestBody String mail, @PathVariable String site) throws CuentaNotFoundException, UserNotFoundException {
+        return ResponseEntity.ok(service.findByUserAndSite(mail, site));
+    }
+
     @GetMapping(value = {"/count/{mail}"})
     public ResponseEntity<Long> countByUserMail(@PathVariable String mail) throws UserNotFoundException {
         return ResponseEntity.ok(service.countByUserMail(mail));
@@ -56,13 +62,33 @@ public class CuentaController {
             response.put("status", "CREATED");
             response.put("message", "Cuenta creada con éxito");
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
-        } catch (CuentaNotFoundException | UserNotFoundException e){
-            response.put("message", "Cuenta no encontrada");
+        } catch (UserNotFoundException e) {
+            response.put("message", e.getMessage());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        } catch (DuplicateAccountException e){
+            response.put("message", e.getMessage());
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
         } catch (IllegalArgumentException e){
             response.put("message", "Bad Request");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
-        } catch (Exception e){
+        }
+    }
+
+    @PutMapping(value = {"/update"})
+    public ResponseEntity<Map<String, String>> update(@RequestBody Cuenta cuenta) {
+        Map<String, String> response = new HashMap<>();
+        try {
+            service.update(cuenta);
+            response.put("status", "CREATED");
+            response.put("message", "Cuenta creada con éxito");
+            return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        } catch (UserNotFoundException | CuentaNotFoundException e) {
+            response.put("message", e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        } catch (IllegalArgumentException e) {
+            response.put("message", "Bad Request");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        } catch (Exception e) {
             response.put("message", "Internal Server Error");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }

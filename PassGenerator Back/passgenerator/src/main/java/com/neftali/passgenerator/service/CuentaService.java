@@ -3,6 +3,7 @@ package com.neftali.passgenerator.service;
 import com.neftali.passgenerator.entity.Cuenta;
 import com.neftali.passgenerator.entity.User;
 import com.neftali.passgenerator.exceptions.CuentaNotFoundException;
+import com.neftali.passgenerator.exceptions.DuplicateAccountException;
 import com.neftali.passgenerator.exceptions.UserNotFoundException;
 import com.neftali.passgenerator.dto.CuentaDTO;
 
@@ -18,7 +19,11 @@ public interface CuentaService {
 
     Cuenta findBySite(String site) throws CuentaNotFoundException;
 
-    void save(Cuenta cuenta) throws CuentaNotFoundException, UserNotFoundException;
+    Cuenta findByUserAndSite(String mail, String site) throws CuentaNotFoundException, UserNotFoundException;
+
+    void save(Cuenta cuenta) throws UserNotFoundException, DuplicateAccountException;
+
+    void update(Cuenta cuenta) throws CuentaNotFoundException, UserNotFoundException;
 
     void delete(String site) throws CuentaNotFoundException;
 

@@ -9,6 +9,8 @@ import { SwalService } from '../../services/swal/swal.service';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { UsersService } from '../../services/users/users.service';
 import { catchError, map, Observable, of } from 'rxjs';
+import { Router } from '@angular/router';
+import { SharedService } from '../../services/shared/shared.service';
 
 @Component({
   selector: 'app-passwords',
@@ -34,7 +36,9 @@ import { catchError, map, Observable, of } from 'rxjs';
 export class PasswordsComponent implements OnInit {
 
   private titleService = inject(TitleService);
+  private route = inject(Router);
   private service = inject(AccountsService);
+  private sharedService = inject(SharedService);
   private title = inject(Title);
   private export = inject(ExportService);
   private swal = inject(SwalService);
@@ -284,6 +288,15 @@ export class PasswordsComponent implements OnInit {
           });
         }
       });
+    }
+  }
+
+  editAccount(site: string){
+    if(this.userconfirmed == false) {
+      this.confirmPassword();
+    } else {
+      this.sharedService.saveSite(site);
+      this.route.navigate(['/save']);
     }
   }
 

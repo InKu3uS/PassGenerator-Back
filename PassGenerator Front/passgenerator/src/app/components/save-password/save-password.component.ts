@@ -5,6 +5,7 @@ import { User } from '../../model/UserSchema';
 import { createCuenta, Cuenta } from '../../model/cuentaSchema';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { SwalService } from '../../services/swal/swal.service';
+import { SharedService } from '../../services/shared/shared.service';
 
 @Component({
   selector: 'app-save-password',
@@ -13,13 +14,15 @@ import { SwalService } from '../../services/swal/swal.service';
 })
 export class SavePasswordComponent implements OnInit {
 
-  
   user: User | undefined;
   private service = inject(AccountsService);
+  private sharedService = inject(SharedService);
   private userService = inject(UsersService);
   private swal = inject(SwalService);
 
   password: string = "";
+  site: string = "";
+  updateAccount: boolean = false;
 
   cuentaForm: FormGroup = new FormGroup({
     site: new FormControl(null, Validators.required),
@@ -30,9 +33,13 @@ export class SavePasswordComponent implements OnInit {
   cuenta = createCuenta;
 
   ngOnInit(): void {
-    if(this.service.getPassword() !== ""){
-      this.password = this.service.getPassword();
+    if(this.sharedService.getPassword() !== ""){
+      this.password = this.sharedService.getPassword();
       this.existsPassword();
+    }
+    if(this.sharedService.getSite() !== ""){
+      this.site = this.sharedService.getSite();
+      this.existsSite();
     }
     this.getUserLogged();
   }
@@ -40,6 +47,12 @@ export class SavePasswordComponent implements OnInit {
   existsPassword(){
     this.cuentaForm.get('password')?.setValue(this.password);
     this.cuentaForm.get('password')?.disable();
+  }
+
+  existsSite(){
+    this.cuentaForm.get('site')?.setValue(this.site);
+    this.cuentaForm.get('site')?.disable();
+    this.updateAccount = true;
   }
 
   getUserLogged(){
@@ -73,20 +86,40 @@ export class SavePasswordComponent implements OnInit {
       site: site,
       password: password
     };
+
     const validationResult = createCuenta.safeParse(cuenta);
     if (!validationResult.success) {
         console.error("Validation error:", validationResult.error);
         return;
     }
-    this.service.save(cuenta).subscribe({
-      next: (response) => {
-        this.cuentaForm.reset();
-        this.swal.savedAccount(site);
-        this.service.resetPassword();
-      },
-      error: (error) => {
-        console.error(error);
-      }
-    });
+
+    if (!this.updateAccount){
+      this.service.save(cuenta).subscribe({
+        next: (response) => {
+          this.cuentaForm.reset();
+          this.swal.savedAccount(site);
+          this.sharedService.resetPassword();
+          this.sharedService.resetSite();
+        },
+        error: (error) => {
+          this.swal.duplicateAccount(error);
+        }
+      });
+    }
+
+    if(this.updateAccount){
+      this.service.update(cuenta).subscribe({
+        next: (response) => {
+          this.cuentaForm.reset();
+          this.swal.updatedAccount(site);
+          this.sharedService.resetPassword();
+          this.sharedService.resetSite();
+        },
+        error: (error) => {
+          this.swal.duplicateAccount(error);
+        }
+      })
+    }
+    
   }
 }

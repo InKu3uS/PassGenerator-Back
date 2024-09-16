@@ -39,9 +39,10 @@ export class LoginComponent implements OnInit {
 
     this.service.login(mail, password).subscribe({
       next: (session) => {
-        localStorage.setItem('token', session.token);
+        localStorage.setItem('tkActUs', session.token);
         const decodedToken = helper.decodeToken(session.token);
-        localStorage.setItem('user', decodedToken.sub);
+        this.saveRole(decodedToken.role);
+        localStorage.setItem('usLg', decodedToken.sub);
         this.route.navigate(['/home']).then(()=> {location.reload()});
       },
       error: (error) => {
@@ -52,6 +53,15 @@ export class LoginComponent implements OnInit {
         }
       },
     });
+  }
+
+  saveRole(role: string) {
+    if(role === 'ROLE_USER'){
+      localStorage.setItem('usActLgRl', 'RLSR');
+    }
+    if(role === 'ROLE_ADMIN'){
+      localStorage.setItem('usActLgRl', 'RLMN');
+    }
   }
 
   redirectIfLoggedIn() {

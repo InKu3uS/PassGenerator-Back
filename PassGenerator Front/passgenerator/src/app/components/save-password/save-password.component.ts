@@ -56,7 +56,7 @@ export class SavePasswordComponent implements OnInit {
   }
 
   getUserLogged(){
-    let mail = localStorage.getItem('user');
+    let mail = localStorage.getItem('usLg');
     if(mail != null){
       this.userService.getUserByEmail(mail).subscribe({
         next: (user) => {

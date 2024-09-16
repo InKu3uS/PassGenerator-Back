@@ -19,11 +19,13 @@ export class HeaderComponent implements OnInit{
   showMobileMenu = false;
   isLoggedIn = false;
   username = '';
+  role = '';
 
   ngOnInit(): void {
     this.isLoggedIn = this.authService.isLoggedIn();
     if(this.isLoggedIn){
       this.getUserName();
+      this.getRole();
     }
   }
 
@@ -45,7 +47,7 @@ export class HeaderComponent implements OnInit{
   }
 
   getUserName() {
-    let email = localStorage.getItem('user');
+    let email = localStorage.getItem('usLg');
     if(email!= null){
       this.userService.getUserByEmail(email).subscribe({
         next: (user) => {
@@ -56,5 +58,9 @@ export class HeaderComponent implements OnInit{
         }
       });
     } 
+  }
+
+  getRole(){
+    let role = localStorage.getItem('usActLgRl');
   }
 }

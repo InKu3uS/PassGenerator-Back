@@ -46,7 +46,7 @@ export class PasswordsComponent implements OnInit {
 
   defaultTitle: string = 'PassGenerator - Passwords';
   accountList: Cuenta[] = [];
-  userLoggedIn: string  = localStorage.getItem('user') || '';
+  userLoggedIn: string  = localStorage.getItem('usLg') || '';
   actualDate: string = '';
 
   hidePasswordButton: boolean = false;

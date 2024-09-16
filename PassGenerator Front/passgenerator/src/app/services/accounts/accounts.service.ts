@@ -12,7 +12,7 @@ export class AccountsService {
   constructor(private http:HttpClient, private router:Router) { }
 
   private apiUrl = 'http://localhost:8080/cuentas';
-  private token = localStorage.getItem('token');
+  private token = localStorage.getItem('tkActUs');
   private headers = new HttpHeaders().set('Authorization', 'Bearer ' + this.token);
 
   getAllAccounts(): Observable<Cuenta[]> {

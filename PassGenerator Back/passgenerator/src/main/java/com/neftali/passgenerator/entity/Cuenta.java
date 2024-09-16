@@ -31,4 +31,6 @@ public class Cuenta {
     private String createTime;
 
     private String expirationTime;
+
+    private boolean notifiedForExpiration = false;
 }

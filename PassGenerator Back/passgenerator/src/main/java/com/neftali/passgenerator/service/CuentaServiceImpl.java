@@ -120,6 +120,7 @@ public class CuentaServiceImpl implements CuentaService{
         cuentaExists.setPassword(cuenta.getPassword());
         cuentaExists.setExpirationTime(cuenta.getExpirationTime());
         cuentaExists.setCreateTime(getFecha());
+        cuentaExists.setNotifiedForExpiration(false);
 
         repository.save(cuentaExists);
     }

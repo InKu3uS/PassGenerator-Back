@@ -89,7 +89,7 @@
               >Mis Passwords</a
             >
             <a
-              *ngIf="isLoggedIn"
+              *ngIf="isLoggedIn && role == 'RLMN'"
               routerLink="users/list"
               class="rounded-md px-3 py-2 max-md:text-sm max-md:px-1 text-md font-bold text-gray-300 hover:bg-gray-700 hover:text-white focus:bg-violet-600 active:translate-y-1"
               >Lista de Usuarios</a
@@ -112,7 +112,6 @@
             <button
               type="button"
               class="relative p-1 flex rounded-full bg-gray-800 text-sm active:translate-y-1"
-              id="user-menu-button"
               aria-expanded="false"
               aria-haspopup="true"
               (click)="toggleDropdown()"
@@ -151,7 +150,6 @@
               class="block px-4 py-2 text-sm text-gray-700 hover:bg-orange-400 hover:font-bold"
               role="menuitem"
               tabindex="-1"
-              id="user-menu-item-0"
               >Mi perfil</a
             >
             <a
@@ -160,7 +158,6 @@
               class="block px-4 py-2 text-sm text-gray-700 hover:bg-orange-400 hover:font-bold"
               role="menuitem"
               tabindex="-1"
-              id="user-menu-item-2"
               >Salir</a
             >
           </div>
@@ -176,7 +173,6 @@
             <button
               type="button"
               class="relative p-1 flex rounded-full bg-gray-800 text-sm active:translate-y-1"
-              id="user-menu-button"
               aria-expanded="false"
               aria-haspopup="true"
               (click)="toggleDropdown()"
@@ -210,7 +206,6 @@
               class="block px-4 py-2 text-sm text-gray-700 hover:bg-orange-400 hover:font-bold"
               role="menuitem"
               tabindex="-1"
-              id="user-menu-item-0"
               >Login</a
             >
             <a
@@ -218,7 +213,6 @@
               class="block px-4 py-2 text-sm text-gray-700 hover:bg-orange-400 hover:font-bold"
               role="menuitem"
               tabindex="-1"
-              id="user-menu-item-1"
               >Registrarse</a
             >
           </div>
@@ -255,7 +249,7 @@
         >Mis Passwords</a
       >
       <a
-        *ngIf="isLoggedIn"
+        *ngIf="isLoggedIn && role === 'RLMN'"
         routerLink="users/list"
         class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white focus:bg-violet-600"
         >Lista de Usuarios</a

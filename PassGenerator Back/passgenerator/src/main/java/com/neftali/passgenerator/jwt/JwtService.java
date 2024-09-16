@@ -22,7 +22,9 @@ public class JwtService {
             "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9eyJqdGkiOiJmOTYzYmM1Yi0xYTY0LTQ0NzgtYjk4YS1hNDY4NzJkNGY2NmEiLCJleHAiOjE1MjU5NjY1ODN9ZHjwy3Lt9ITCTMVrLVjNISYyMmWkZ30WaaTnOJfnw";
 
     public String getToken(User user) {
-        return getToken(new HashMap<>(), user);
+        Map<String, Object> extraClaims = new HashMap<>();
+        extraClaims.put("role", user.getRole().name());
+        return getToken(extraClaims, user);
     }
 
 
@@ -48,6 +50,10 @@ public class JwtService {
 
     public String getUsernameFromToken(String token) {
         return getClaim(token, Claims::getSubject);
+    }
+
+    public String getRoleFromToken(String token) {
+        return getClaim(token, claims -> claims.get("role", String.class));
     }
 
     public boolean isTokenValid(String token, UserDetails userDetails) {

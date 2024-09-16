@@ -31,20 +31,28 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
 
     public AuthResponse login(LoginRequest request) throws UserNotFoundException {
-        try{
+
+        try {
+
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getMail(), request.getPassword()));
-        }catch(Exception e){
+
+        } catch(Exception e){
+
             throw new UserNotFoundException("Invalid email or password");
+
         }
+
         User user = repository.findByEmail(request.getMail()).orElseThrow();
         String token = jwtService.getToken(user);
 
         return AuthResponse.builder()
                 .token(token)
+                .role(user.getRole().name())
                 .build();
     }
 
     public AuthResponse register(RegisterRequest request) throws MessagingException {
+
         User user = User.builder()
                 .username(request.getUsername())
                 .email(request.getEmail())

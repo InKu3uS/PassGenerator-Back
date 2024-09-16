@@ -63,6 +63,7 @@ public class EmailServiceImpl implements IEmailService {
 
     @Override
     public void sendExpirationWarning(String email, String name) throws MessagingException {
+
         try {
             MimeMessage message = javaMailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
@@ -87,7 +88,7 @@ public class EmailServiceImpl implements IEmailService {
 
 
     @Override
-    @Scheduled(cron = "0 0 10 * * ?")
+    @Scheduled(cron = "0 00 10 * * ?")
     public void checkExpirationAndSendEmail() throws MessagingException {
 
         LocalDate now = LocalDate.now();

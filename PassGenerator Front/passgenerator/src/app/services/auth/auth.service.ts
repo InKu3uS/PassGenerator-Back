@@ -22,13 +22,14 @@ export class AuthService {
   }
 
   isLoggedIn(): boolean{
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('tkActUs');
     return token!=null;
   }
 
   logout(): void{
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
+    localStorage.removeItem('tkActUs');
+    localStorage.removeItem('usLg');
+    localStorage.removeItem('usActLgRl');
     this.router.navigate(['/home']).then(() => {location.reload()});
   }
 }

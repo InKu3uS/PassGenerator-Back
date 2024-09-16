@@ -54,8 +54,8 @@ export class MyProfileComponent implements OnInit {
   }
 
   getMailLogged() {
-    if (localStorage.getItem('user') != null) {
-      this.emailLoggedIn = localStorage.getItem('user')!;
+    if (localStorage.getItem('usLg') != null) {
+      this.emailLoggedIn = localStorage.getItem('usLg')!;
     }
   }
 

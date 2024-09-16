@@ -11,7 +11,7 @@ export class UsersService {
   constructor(private http: HttpClient) { }
 
   private apiUrl = 'http://localhost:8080/users';
-  private token = localStorage.getItem('token');
+  private token = localStorage.getItem('tkActUs');
   private headers = new HttpHeaders().set('Authorization', 'Bearer ' + this.token);
 
   getAllUsers(): Observable<User[]> {

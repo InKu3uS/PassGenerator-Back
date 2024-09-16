@@ -7,7 +7,9 @@ public interface IEmailService {
 
     public void sendMail(EmailDTO emailDTO) throws MessagingException;
 
-    public void sendExpirationWarning(String email, String name) throws MessagingException;
+    public void sendExpirationWarning(String email, String name, String content) throws MessagingException;
 
     public void checkExpirationAndSendEmail() throws MessagingException;
+
+    public void checkPasswordExpiredAndSendEmail() throws MessagingException;
 }

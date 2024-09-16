@@ -15,6 +15,8 @@ public interface CuentaRepository extends JpaRepository<Cuenta, String> {
 
     List<Cuenta> findByExpirationTimeBeforeAndNotifiedForExpirationFalse(String localDateTime);
 
+    List<Cuenta> findByExpirationTimeBeforeAndNotifiedForExpiredFalse(String localDateTime);
+
     Optional<Cuenta> findBySite(String site) throws CuentaNotFoundException;
 
     Optional<Cuenta> findByUserUuidAndSite(String userUuid, String site);

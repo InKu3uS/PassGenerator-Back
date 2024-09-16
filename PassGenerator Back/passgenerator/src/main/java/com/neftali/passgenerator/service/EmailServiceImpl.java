@@ -57,12 +57,12 @@ public class EmailServiceImpl implements IEmailService {
 
             javaMailSender.send(message);
         } catch (Exception e){
-            throw new RuntimeException("Error al enviar el correo: " + e.getMessage(), e);
+            throw new MessagingException("Error al enviar el correo: " + e.getMessage(), e);
         }
     }
 
     @Override
-    public void sendExpirationWarning(String email, String name) throws MessagingException {
+    public void sendExpirationWarning(String email, String name, String content) throws MessagingException {
 
         try {
             MimeMessage message = javaMailSender.createMimeMessage();
@@ -73,7 +73,7 @@ public class EmailServiceImpl implements IEmailService {
 
             Context context = new Context();
             context.setVariable("recipent", email);
-            context.setVariable("message", name+" , una de tus contraseñas esta a punto de expirar");
+            context.setVariable("message", name+content);
             String template = templateEngine.process("expirationWarning", context);
             helper.setText(template, true);
 
@@ -82,7 +82,7 @@ public class EmailServiceImpl implements IEmailService {
 
             javaMailSender.send(message);
         } catch (Exception e){
-            throw new RuntimeException("Error al enviar el correo: " + e.getMessage(), e);
+            throw new MessagingException("Error al enviar el correo: " + e.getMessage(), e);
         }
     }
 
@@ -92,7 +92,6 @@ public class EmailServiceImpl implements IEmailService {
     public void checkExpirationAndSendEmail() throws MessagingException {
 
         LocalDate now = LocalDate.now();
-        LocalDate expirationLimit = now.plusDays(7);
 
         List<Cuenta> allAccounts = cuentaRepository.findAll();
 
@@ -101,9 +100,31 @@ public class EmailServiceImpl implements IEmailService {
             LocalDate expirationTime = dateParser(cuenta.getExpirationTime());
 
             if(expirationTime != null){
-                if(expirationTime.isBefore(expirationLimit) && !cuenta.isNotifiedForExpiration()){
-                    sendExpirationWarning(cuenta.getUser().getEmail(), cuenta.getUser().getUsername());
+                if(expirationTime.isBefore(now) && !cuenta.isNotifiedForExpiration()){
+                    sendExpirationWarning(cuenta.getUser().getEmail(), cuenta.getUser().getUsername(), ", una de tus contraseñas esta a punto de expirar.");
                     cuenta.setNotifiedForExpiration(true);
+                    cuentaRepository.save(cuenta);
+                }
+            }
+        }
+    }
+
+    @Override
+    @Scheduled(cron = "0 00 10 * * ?")
+    public void checkPasswordExpiredAndSendEmail() throws MessagingException {
+
+        LocalDate now = LocalDate.now();
+
+        List<Cuenta> allAccounts = cuentaRepository.findAll();
+
+        for(Cuenta cuenta : allAccounts){
+
+            LocalDate expirationTime = dateParser(cuenta.getExpirationTime());
+
+            if(expirationTime != null){
+                if(expirationTime.isBefore(now) && !cuenta.isNotifiedForExpiration()){
+                    sendExpirationWarning(cuenta.getUser().getEmail(), cuenta.getUser().getUsername(), ", una de tus contraseñas ha expirado.");
+                    cuenta.setNotifiedForExpired(true);
                     cuentaRepository.save(cuenta);
                 }
             }

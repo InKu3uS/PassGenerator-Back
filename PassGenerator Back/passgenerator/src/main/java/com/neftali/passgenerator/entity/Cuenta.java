@@ -33,4 +33,6 @@ public class Cuenta {
     private String expirationTime;
 
     private boolean notifiedForExpiration = false;
+
+    private boolean notifiedForExpired = false;
 }

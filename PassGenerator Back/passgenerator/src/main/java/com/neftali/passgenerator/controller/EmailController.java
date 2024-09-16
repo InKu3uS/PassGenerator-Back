@@ -24,14 +24,20 @@ public class EmailController {
     }
 
     @PostMapping(value = {"/warning"})
-    private ResponseEntity<String> warning(@RequestBody String email, String name) throws MessagingException {
-        emailService.sendExpirationWarning(email, name);
+    private ResponseEntity<String> warning(@RequestBody String email, String name, String content) throws MessagingException {
+        emailService.sendExpirationWarning(email, name, content);
         return new ResponseEntity<>("Correo enviado con exito", HttpStatus.OK);
     }
 
     @PostMapping(value = {"/send-warning"})
     private ResponseEntity<String> sendWarning() throws MessagingException {
         emailService.checkExpirationAndSendEmail();
+        return new ResponseEntity<>("Correo enviado con exito", HttpStatus.OK);
+    }
+
+    @PostMapping(value = {"/send-alert"})
+    private ResponseEntity<String> sendAlert() throws MessagingException {
+        emailService.checkPasswordExpiredAndSendEmail();
         return new ResponseEntity<>("Correo enviado con exito", HttpStatus.OK);
     }
 }

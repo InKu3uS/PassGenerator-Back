@@ -3,6 +3,7 @@ package com.neftali.passgenerator.controller;
 import com.neftali.passgenerator.entity.User;
 import com.neftali.passgenerator.exceptions.UserNotFoundException;
 import com.neftali.passgenerator.service.UserService;
+import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -73,7 +74,7 @@ public class UserController {
     }
 
     @DeleteMapping(value = {"/{email}"})
-    public ResponseEntity<Map<String, String>> delete(@PathVariable String email) throws UserNotFoundException {
+    public ResponseEntity<Map<String, String>> delete(@PathVariable String email) throws UserNotFoundException, MessagingException {
         Map<String, String> response = new HashMap<>();
         User existingUser = service.findByEmail(email);
         if(existingUser.getUuid() != null){

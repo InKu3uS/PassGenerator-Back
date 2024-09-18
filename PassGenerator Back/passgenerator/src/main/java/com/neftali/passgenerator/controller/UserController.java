@@ -3,7 +3,6 @@ package com.neftali.passgenerator.controller;
 import com.neftali.passgenerator.entity.User;
 import com.neftali.passgenerator.exceptions.UserNotFoundException;
 import com.neftali.passgenerator.service.UserService;
-import org.mapstruct.control.MappingControl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,12 +20,12 @@ public class UserController {
     UserService service;
 
     @PostMapping(value = {"/verify-password"})
-    public ResponseEntity<?> verifyPassword(@RequestParam String email, @RequestParam String password) throws UserNotFoundException {
+    public ResponseEntity<?> verifyPassword(@RequestParam String email, @RequestParam String password) {
         try{
             boolean isValid = service.verifyPassword(email, password);
             return ResponseEntity.ok().body(isValid);
         }catch (UserNotFoundException e){
-            return ResponseEntity.status(404).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
 
@@ -39,7 +38,7 @@ public class UserController {
             response.put("message", "Nombre de usuario modificado con éxito");
             return ResponseEntity.status(HttpStatus.OK).body(response);
         } catch (UserNotFoundException e) {
-            response.put("message", "Cuenta no encontrada");
+            response.put("message", e.getMessage());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
         }
     }
@@ -53,7 +52,7 @@ public class UserController {
             response.put("message", "Contraseña modificada con éxito");
             return ResponseEntity.status(HttpStatus.OK).body(response);
         } catch (UserNotFoundException e) {
-            response.put("messasge", "Cuenta no encontrada");
+            response.put("messasge", e.getMessage());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
         }
     }

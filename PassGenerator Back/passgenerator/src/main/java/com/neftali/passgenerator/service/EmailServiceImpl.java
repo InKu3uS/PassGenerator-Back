@@ -17,7 +17,9 @@ import org.thymeleaf.context.Context;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class EmailServiceImpl implements IEmailService {
@@ -92,16 +94,25 @@ public class EmailServiceImpl implements IEmailService {
     public void checkExpirationAndSendEmail() throws MessagingException {
 
         LocalDate now = LocalDate.now();
-
         List<Cuenta> allAccounts = cuentaRepository.findAll();
+        Map<String, Boolean> usersNotified = new HashMap<>();
 
         for(Cuenta cuenta : allAccounts){
 
             LocalDate expirationTime = dateParser(cuenta.getExpirationTime());
 
             if(expirationTime != null){
-                if(expirationTime.isBefore(now) && !cuenta.isNotifiedForExpiration()){
-                    sendExpirationWarning(cuenta.getUser().getEmail(), cuenta.getUser().getUsername(), ", una de tus contraseñas esta a punto de expirar.");
+
+                LocalDate notificationThreshold = expirationTime.minusDays(7);
+                String user = cuenta.getUser().getEmail();
+
+                if(!cuenta.isNotifiedForExpiration() && now.isAfter(notificationThreshold) && now.isBefore(expirationTime)){
+
+                    if(!usersNotified.containsKey(user)) {
+                        sendExpirationWarning(cuenta.getUser().getEmail(), cuenta.getUser().getUsername(), ", una de tus contraseñas esta a punto de expirar.");
+                        usersNotified.put(user, true);
+                    }
+
                     cuenta.setNotifiedForExpiration(true);
                     cuentaRepository.save(cuenta);
                 }
@@ -116,14 +127,21 @@ public class EmailServiceImpl implements IEmailService {
         LocalDate now = LocalDate.now();
 
         List<Cuenta> allAccounts = cuentaRepository.findAll();
+        Map<String, Boolean> usersNotified = new HashMap<>();
 
         for(Cuenta cuenta : allAccounts){
 
             LocalDate expirationTime = dateParser(cuenta.getExpirationTime());
+            String user = cuenta.getUser().getEmail();
 
             if(expirationTime != null){
-                if(expirationTime.isBefore(now) && !cuenta.isNotifiedForExpiration()){
+
+                if(!cuenta.isNotifiedForExpired() && expirationTime.isBefore(now)){
+
+                    if(!usersNotified.containsKey(user)){
                     sendExpirationWarning(cuenta.getUser().getEmail(), cuenta.getUser().getUsername(), ", una de tus contraseñas ha expirado.");
+                    usersNotified.put(user, true);
+                    }
                     cuenta.setNotifiedForExpired(true);
                     cuentaRepository.save(cuenta);
                 }

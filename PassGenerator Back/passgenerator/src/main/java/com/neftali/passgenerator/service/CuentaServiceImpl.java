@@ -46,7 +46,7 @@ public class CuentaServiceImpl implements CuentaService{
     public Cuenta findById(String id) throws CuentaNotFoundException {
         Optional<Cuenta> cuenta = repository.findById(id);
         if(cuenta.isEmpty()){
-            throw new CuentaNotFoundException("Cuenta con el ID: "+ id + " no encontrada");
+            throw new CuentaNotFoundException("Cuenta no encontrada");
         }
         return cuenta.get();
     }
@@ -79,9 +79,9 @@ public class CuentaServiceImpl implements CuentaService{
         } else {
             try {
                 Optional<Cuenta> cuenta = repository.findByUserUuidAndSite(user.get().getUuid(), site);
-                return cuenta.orElseThrow(()->new CuentaNotFoundException("Account not found"));
+                return cuenta.orElseThrow(()->new CuentaNotFoundException("Cuenta no encontrada"));
             } catch (Exception e) {
-                throw new CuentaNotFoundException("Account not found");
+                throw new CuentaNotFoundException("Cuenta no encontrada");
             }
         }
     }
@@ -91,7 +91,7 @@ public class CuentaServiceImpl implements CuentaService{
     public void save(Cuenta cuenta) throws UserNotFoundException, DuplicateAccountException {
         //Encuentra al usuario por UUID
         User user = userRepository.findByUuid(cuenta.getUser().getUuid())
-                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+                .orElseThrow(() -> new UserNotFoundException("Usuario no encontrado"));
 
         // Asigna el User recuperado a la Cuenta
         cuenta.setUser(user);

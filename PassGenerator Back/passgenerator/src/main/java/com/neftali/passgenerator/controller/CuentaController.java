@@ -68,9 +68,9 @@ public class CuentaController {
         } catch (DuplicateAccountException e){
             response.put("message", e.getMessage());
             return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
-        } catch (IllegalArgumentException e){
-            response.put("message", "Bad Request");
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        } catch (Exception e) {
+            response.put("message", "Error desconocido al guardar la cuenta");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
 
@@ -85,9 +85,6 @@ public class CuentaController {
         } catch (UserNotFoundException | CuentaNotFoundException e) {
             response.put("message", e.getMessage());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-        } catch (IllegalArgumentException e) {
-            response.put("message", "Bad Request");
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         } catch (Exception e) {
             response.put("message", "Internal Server Error");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
@@ -104,7 +101,11 @@ public class CuentaController {
                 response.put("status", "OK");
                 response.put("message", "Cuenta borrada con éxito");
                 return ResponseEntity.status(HttpStatus.OK).body(response);
-            } catch (RuntimeException e) {
+            } catch (CuentaNotFoundException e){
+                response.put("message", e.getMessage());
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+            }
+            catch (Exception e) {
                 response.put("status", "500");
                 response.put("message", "No se ha podido borrar la cuenta");
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);

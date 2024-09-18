@@ -16,8 +16,6 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
 
   }
-  //TODO: Revisar todas las excepciones en el back.
-  //TODO: Enviar correo cuando contraseña haya expirado
-  //TODO: Enviar correo al borrar cuenta
+  //TODO: Usar MailDTO para el envio de correos.
   //TODO: Menu administrador?
 }

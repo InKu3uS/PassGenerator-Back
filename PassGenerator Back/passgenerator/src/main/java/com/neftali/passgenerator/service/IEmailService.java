@@ -5,11 +5,13 @@ import jakarta.mail.MessagingException;
 
 public interface IEmailService {
 
-    public void sendMail(EmailDTO emailDTO) throws MessagingException;
+    void sendMail(EmailDTO emailDTO) throws MessagingException;
 
-    public void sendExpirationWarning(String email, String name, String content) throws MessagingException;
+    void sendExpirationWarning(String email, String name, String content) throws MessagingException;
 
-    public void checkExpirationAndSendEmail() throws MessagingException;
+    void checkExpirationAndSendEmail() throws MessagingException;
 
-    public void checkPasswordExpiredAndSendEmail() throws MessagingException;
+    void checkPasswordExpiredAndSendEmail() throws MessagingException;
+
+    void sendFarewellEmail(String email, String name) throws MessagingException;
 }

@@ -15,6 +15,7 @@ import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
 import java.time.LocalDate;
+import java.time.Year;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.HashMap;
@@ -51,6 +52,7 @@ public class EmailServiceImpl implements IEmailService {
             Context context = new Context();
             context.setVariable("recipent", emailDTO.getRecipent());
             context.setVariable("message", emailDTO.getMessage());
+            context.setVariable("year", Year.now().getValue());
             String template = templateEngine.process("welcome", context);
             helper.setText(template, true);
 
@@ -76,6 +78,7 @@ public class EmailServiceImpl implements IEmailService {
             Context context = new Context();
             context.setVariable("recipent", email);
             context.setVariable("message", name+content);
+            context.setVariable("year", Year.now().getValue());
             String template = templateEngine.process("expirationWarning", context);
             helper.setText(template, true);
 
@@ -85,6 +88,31 @@ public class EmailServiceImpl implements IEmailService {
             javaMailSender.send(message);
         } catch (Exception e){
             throw new MessagingException("Error al enviar el correo: " + e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public void sendFarewellEmail(String email, String name) throws MessagingException {
+        try {
+            MimeMessage message = javaMailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+
+            helper.setTo(email);
+            helper.setSubject("PassGenerator - Esperamos verte pronto");
+
+            Context context = new Context();
+            context.setVariable("recipent", email);
+            context.setVariable("name", name);
+            context.setVariable("year", Year.now().getValue());
+            String template = templateEngine.process("farewell", context);
+            helper.setText(template, true);
+
+            ClassPathResource logo = new ClassPathResource("static/images/logo.png");
+            helper.addInline("logo", logo, "image/png");
+
+            javaMailSender.send(message);
+        } catch (Exception e){
+            throw new MessagingException("Error al enviar el correo: "+ e.getMessage());
         }
     }
 
@@ -148,7 +176,9 @@ public class EmailServiceImpl implements IEmailService {
             }
         }
     }
-    
+
+
+
     public LocalDate dateParser(String date){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         try {

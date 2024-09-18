@@ -3,6 +3,7 @@ import com.neftali.passgenerator.entity.User;
 import com.neftali.passgenerator.exceptions.UserNotFoundException;
 import com.neftali.passgenerator.repository.CuentaRepository;
 import com.neftali.passgenerator.repository.UserRepository;
+import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,9 @@ public class UserServiceImpl implements UserService{
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private IEmailService emailService;
 
     @Override
     @Transactional(readOnly = true)
@@ -81,11 +85,12 @@ public class UserServiceImpl implements UserService{
 
     @Override
     @Transactional
-    public void delete(User user) throws UserNotFoundException {
+    public void delete(User user) throws UserNotFoundException, MessagingException {
         if(user.getCuentas() != null){
             cuentaRepository.deleteByUserUuid(user.getUuid());
         }
         repository.deleteByUuid(user.getUuid());
+        emailService.sendFarewellEmail(user.getEmail(), user.getUsername());
     }
 
     @Override
@@ -96,11 +101,5 @@ public class UserServiceImpl implements UserService{
         }else {
             throw new UserNotFoundException("Usuario no encontrado");
         }
-    }
-
-    public String getFecha(){
-        LocalDate creationDate = LocalDate.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        return creationDate.format(formatter);
     }
 }

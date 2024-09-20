@@ -17,5 +17,6 @@ export class AppComponent implements OnInit {
 
   }
   //TODO: Usar MailDTO para el envio de correos.
+  //TODO: Clase de utilidades en el back
   //TODO: Menu administrador?
 }

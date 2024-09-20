@@ -6,6 +6,7 @@ import { createCuenta, Cuenta } from '../../model/cuentaSchema';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { SwalService } from '../../services/swal/swal.service';
 import { SharedService } from '../../services/shared/shared.service';
+import { ValidateDate } from '../../validators/date.validator';
 
 @Component({
   selector: 'app-save-password',
@@ -23,11 +24,12 @@ export class SavePasswordComponent implements OnInit {
   password: string = "";
   site: string = "";
   updateAccount: boolean = false;
+  minDate: string = "";
 
   cuentaForm: FormGroup = new FormGroup({
     site: new FormControl(null, Validators.required),
     password: new FormControl(null, Validators.required),
-    expiration: new FormControl(null, Validators.required)
+    expiration: new FormControl(null, [Validators.required, ValidateDate])
   });
   
   cuenta = createCuenta;
@@ -42,6 +44,7 @@ export class SavePasswordComponent implements OnInit {
       this.existsSite();
     }
     this.getUserLogged();
+    this.showDate();
   }
 
   existsPassword(){
@@ -68,6 +71,12 @@ export class SavePasswordComponent implements OnInit {
       });
     }
   }
+
+  showDate(){
+    let date = new Date().toISOString();
+    this.minDate = date.split('T')[0];
+  }
+
   saveAccount(){
     let site = this.cuentaForm.get('site')?.value;
     let password = this.cuentaForm.get('password')?.value;

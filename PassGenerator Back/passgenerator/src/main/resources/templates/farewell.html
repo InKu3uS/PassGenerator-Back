@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Aviso de expiración</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #eaece6;
+            text-align: center;
+        }
+        .container {
+            width: 100%;
+            border-radius: 30px 30px 30px 30px;
+            background-color: #eaece6;
+            text-align: center;
+            padding-top: 20px 0;
+        }
+        table.container {
+            width: 40%;
+            margin: 0 auto;
+            border-spacing: 0;
+            padding: 1%;
+            background-color: #eaece6;
+            border-radius: 30px 30px 0 0;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        td.body {
+            padding: 20px;
+            background-color: #334155;
+            border-radius: 30px;
+            color: white;
+        }
+        h1 {
+            font-size: 60px;
+            color: #F97316;
+            margin: 0;
+        }
+        .lista {
+            text-align: center;
+        }
+        .lista ul {
+            display: inline-block;
+            padding-left: 0;
+            list-style: disc;
+            margin: 0;
+        }
+        .lista ul li {
+            text-align: left;
+            margin: 5px 0;
+            color: white;
+        }
+        .info {
+            color: black;
+            margin-top: 40px;
+            font-size: 14px;
+        }
+        .footer {
+
+            text-align: center;
+            font-weight: bold;
+            background-color: #F97316;
+            color: black;
+            padding: 10px;
+            border-radius: 0 0 30px 30px;
+        }
+        img {
+            height: 150px;
+            width: auto;
+        }
+        td.info {
+            padding: 0 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <table class="container" cellspacing="0" cellpadding="0">
+            <!-- Contenido principal -->
+            <tr>
+                <td class="body">
+                    <table width="100%" cellspacing="0" cellpadding="0">
+                        <tr>
+                            <td align="center">
+                                <h1>PassGenerator</h1>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center">
+                                <img th:src="@{cid:logo}" alt="Logo">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center">
+                                <h3 th:text="'Hola ' + ${name}"></h3>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center">
+                                <h5>Tu cuenta de PassGenerator ha sido borrada con éxito.</h5>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center">
+                                <h5>Lamentamos que te marches. Si alguna vez decides regresar, estaremos encantados de darte la bienvenida de nuevo y ayudarte a gestionar tus contraseñas de una manera segura y eficiente.</h5>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center">
+                                <h5>Gracias por formar parte de nuestra comunidad, ¡y esperamos verte pronto!</h5>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center">
+                                <h5>Saludos cordiales,</h5>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center">
+                                <h5>El equipo de PassGenerator.</h5>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <!-- Información adicional -->
+            <tr>
+                <td class="info">
+                    <p th:text="'Este mensaje ha sido enviado a: ' + ${recipent} + ' mediante un sistema automático. Por favor, no respondas a este e-mail directamente.'"></p>
+                </td>
+            </tr>
+        </table>
+        <div class="footer">
+            <h3 th:text="'PassGenerator ' + ${year}"></h3>
+        </div>
+    </div>
+</body>
+</html>

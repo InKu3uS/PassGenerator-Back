@@ -1,13 +1,14 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
-    "./src/**/*.{html,ts}",
-    "./src/app/*.{html,ts}",
-    "./src/app/components/**/*.{html,ts}",
-    "./src/index.html"
+    "./src/**/*.{html,ts}"
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        'orbitron': ['Orbitron', 'sans-serif'],
+      }
+    },
   },
   plugins: [],
 }

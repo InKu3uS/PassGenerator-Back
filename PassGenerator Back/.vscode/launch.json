@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-PassgeneratorApplication<passgenerator>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.neftali.passgenerator.PassgeneratorApplication",
+            "projectName": "passgenerator",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}

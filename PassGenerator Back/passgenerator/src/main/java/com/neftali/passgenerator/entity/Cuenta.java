@@ -1,11 +1,14 @@
 package com.neftali.passgenerator.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "cuentas")
+@Table(name = "cuentas",
+    uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"user_uuid", "site"})
+    })
 @Data
 @Builder
 @NoArgsConstructor
@@ -16,11 +19,12 @@ public class Cuenta {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_uuid")
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "user_uuid", referencedColumnName = "uuid")
+    @JsonBackReference
     private User user;
 
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private String site;
 
     @Column(nullable = false)
@@ -29,4 +33,8 @@ public class Cuenta {
     private String createTime;
 
     private String expirationTime;
+
+    private boolean notifiedForExpiration = false;
+
+    private boolean notifiedForExpired = false;
 }

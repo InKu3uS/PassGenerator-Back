@@ -1,5 +1,4 @@
 package com.neftali.passgenerator.repository;
-
 import com.neftali.passgenerator.entity.Cuenta;
 import com.neftali.passgenerator.entity.User;
 import com.neftali.passgenerator.exceptions.CuentaNotFoundException;
@@ -14,8 +13,17 @@ public interface CuentaRepository extends JpaRepository<Cuenta, String> {
 
     List<Cuenta> findByUser(User user) throws CuentaNotFoundException;
 
+    List<Cuenta> findByExpirationTimeBeforeAndNotifiedForExpirationFalse(String localDateTime);
+
+    List<Cuenta> findByExpirationTimeBeforeAndNotifiedForExpiredFalse(String localDateTime);
+
     Optional<Cuenta> findBySite(String site) throws CuentaNotFoundException;
+
+    Optional<Cuenta> findByUserUuidAndSite(String userUuid, String site);
 
     void deleteBySite(String site) throws CuentaNotFoundException;
 
+    void deleteByUserUuid(String userUuid);
+
+    long countByUser(User user);
 }

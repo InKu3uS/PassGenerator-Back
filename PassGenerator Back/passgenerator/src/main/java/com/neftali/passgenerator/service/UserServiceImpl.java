@@ -1,14 +1,15 @@
 package com.neftali.passgenerator.service;
-
+import com.neftali.passgenerator.dto.UserDetailsDTO;
+import com.neftali.passgenerator.dto.UserMapper;
 import com.neftali.passgenerator.entity.User;
 import com.neftali.passgenerator.exceptions.UserNotFoundException;
+import com.neftali.passgenerator.repository.CuentaRepository;
 import com.neftali.passgenerator.repository.UserRepository;
+import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,14 +19,25 @@ public class UserServiceImpl implements UserService{
     @Autowired
     private UserRepository repository;
 
-    @Override
+    @Autowired
+    private CuentaRepository cuentaRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private IEmailService emailService;
+
+    @Autowired
+    private UserMapper userMapper;
+
     @Transactional(readOnly = true)
-    public List<User> findAll() throws UserNotFoundException {
+    public List<UserDetailsDTO> findAll() throws UserNotFoundException {
         List<User> users = repository.findAll();
         if(users.isEmpty()){
             throw new UserNotFoundException("No se han encontrado usuarios");
         }
-        return users;
+        return users.stream().map(user -> userMapper.userToUserDetailsDTO(user)).toList();
     }
 
     @Override
@@ -50,28 +62,45 @@ public class UserServiceImpl implements UserService{
 
     @Override
     @Transactional
-    public void save(User user) throws UserNotFoundException {
-        Optional<User> userExists = repository.findByUsername(user.getUsername());
+    public void editUsername(String email, String username) throws UserNotFoundException {
+        Optional<User> userExists = repository.findByEmail(email);
         if(userExists.isPresent()){
-            userExists.get().setUsername(user.getUsername());
-            userExists.get().setEmail(user.getEmail());
-            userExists.get().setPassword(user.getPassword());
+            userExists.get().setUsername(username);
             repository.save(userExists.get());
         }else {
-            user.setCreateTime(getFecha());
-            repository.save(user);
+            throw new UserNotFoundException("Usuario no encontrado");
         }
     }
+
     @Override
     @Transactional
-    public void delete(User user) throws UserNotFoundException{
+    public void editPassword(String email, String password) throws UserNotFoundException {
+        Optional<User> userExists = repository.findByEmail(email);
+        if(userExists.isPresent()){
+            userExists.get().setPassword(passwordEncoder.encode(password));
+            repository.save(userExists.get());
+        }else {
+            throw new UserNotFoundException("Usuario no encontrado");
+        }
+    }
+
+    @Override
+    @Transactional
+    public void delete(User user) throws UserNotFoundException, MessagingException {
+        if(user.getCuentas() != null){
+            cuentaRepository.deleteByUserUuid(user.getUuid());
+        }
         repository.deleteByUuid(user.getUuid());
+        emailService.sendFarewellEmail(user.getEmail(), user.getUsername());
     }
 
-    public String getFecha(){
-        LocalDate creationDate = LocalDate.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        return creationDate.format(formatter);
+    @Override
+    public boolean verifyPassword(String email, String password) throws UserNotFoundException {
+        Optional<User> user = repository.findByEmail(email);
+        if(user.isPresent()){
+            return passwordEncoder.matches(password, user.get().getPassword());
+        }else {
+            throw new UserNotFoundException("Usuario no encontrado");
+        }
     }
-
 }

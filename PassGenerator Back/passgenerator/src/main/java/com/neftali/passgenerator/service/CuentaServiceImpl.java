@@ -1,8 +1,11 @@
 package com.neftali.passgenerator.service;
 
+import com.neftali.passgenerator.dto.CuentaDTO;
+import com.neftali.passgenerator.dto.CuentaMapper;
 import com.neftali.passgenerator.entity.Cuenta;
 import com.neftali.passgenerator.entity.User;
 import com.neftali.passgenerator.exceptions.CuentaNotFoundException;
+import com.neftali.passgenerator.exceptions.DuplicateAccountException;
 import com.neftali.passgenerator.exceptions.UserNotFoundException;
 import com.neftali.passgenerator.repository.CuentaRepository;
 import com.neftali.passgenerator.repository.UserRepository;
@@ -25,14 +28,17 @@ public class CuentaServiceImpl implements CuentaService{
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private CuentaMapper cuentaMapper;
+
     @Override
     @Transactional(readOnly = true)
-    public List<Cuenta> findAll() throws CuentaNotFoundException {
+    public List<CuentaDTO> findAll() throws CuentaNotFoundException {
         List<Cuenta> cuentas = repository.findAll();
         if(cuentas.isEmpty()){
             throw new CuentaNotFoundException("No se han encontrado cuentas guardadas");
         }
-        return cuentas;
+        return cuentas.stream().map(cuenta -> cuentaMapper.cuentaToCuentaDTO(cuenta)).toList();
     }
 
     @Override
@@ -40,19 +46,19 @@ public class CuentaServiceImpl implements CuentaService{
     public Cuenta findById(String id) throws CuentaNotFoundException {
         Optional<Cuenta> cuenta = repository.findById(id);
         if(cuenta.isEmpty()){
-            throw new CuentaNotFoundException("Cuenta con el ID: "+ id + " no encontrada");
+            throw new CuentaNotFoundException("Cuenta no encontrada");
         }
         return cuenta.get();
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<Cuenta> findByUser(User user) throws CuentaNotFoundException {
+    public List<CuentaDTO> findByUser(User user) throws CuentaNotFoundException {
         List<Cuenta> cuentas = repository.findByUser(user);
         if(cuentas.isEmpty()){
             throw new CuentaNotFoundException("No se han encontrado cuentas de ese usuario");
         }
-        return cuentas;
+        return cuentas.stream().map(cuenta -> cuentaMapper.cuentaToCuentaDTO(cuenta)).toList();
     }
 
     @Override
@@ -66,25 +72,73 @@ public class CuentaServiceImpl implements CuentaService{
     }
 
     @Override
-    @Transactional
-    public void save(Cuenta cuenta) throws CuentaNotFoundException, UserNotFoundException {
-        Optional<Cuenta> cuentaExists = repository.findBySite(cuenta.getSite());
-        if(cuentaExists.isPresent()){
-            cuentaExists.get().setPassword(cuenta.getPassword());
-            cuentaExists.get().setCreateTime(cuenta.getCreateTime());
-            cuentaExists.get().setExpirationTime(cuenta.getExpirationTime());
-            cuentaExists.get().setCreateTime(getFecha());
-            repository.save(cuentaExists.get());
-        }else{
-            cuenta.setCreateTime(getFecha());
-            repository.save(cuenta);
+    public Cuenta findByUserAndSite(String mail, String site) throws CuentaNotFoundException, UserNotFoundException {
+        Optional<User> user = userRepository.findByEmail(mail);
+        if (user.isEmpty()){
+            throw new UserNotFoundException("Usuario no encontrado");
+        } else {
+            try {
+                Optional<Cuenta> cuenta = repository.findByUserUuidAndSite(user.get().getUuid(), site);
+                return cuenta.orElseThrow(()->new CuentaNotFoundException("Cuenta no encontrada"));
+            } catch (Exception e) {
+                throw new CuentaNotFoundException("Cuenta no encontrada");
+            }
         }
+    }
+
+    @Override
+    @Transactional
+    public void save(Cuenta cuenta) throws UserNotFoundException, DuplicateAccountException {
+        //Encuentra al usuario por UUID
+        User user = userRepository.findByUuid(cuenta.getUser().getUuid())
+                .orElseThrow(() -> new UserNotFoundException("Usuario no encontrado"));
+
+        // Asigna el User recuperado a la Cuenta
+        cuenta.setUser(user);
+
+        // Verifica si existe una cuenta con el mismo site para ese usuario
+        Optional<Cuenta> cuentaExists = repository.findByUserUuidAndSite(user.getUuid(), cuenta.getSite());
+
+        if(cuentaExists.isPresent()){
+            throw new DuplicateAccountException("El usuario ya tiene una cuenta del sitio " + cuenta.getSite());
+        }
+
+        cuenta.setCreateTime(getFecha());
+        repository.save(cuenta);
+    }
+
+    @Override
+    public void update(Cuenta cuenta) throws CuentaNotFoundException, UserNotFoundException {
+        User user = userRepository.findByUuid(cuenta.getUser().getUuid())
+                .orElseThrow(()->new UsernameNotFoundException("Usuario no encontrado"));
+
+        cuenta.setUser(user);
+
+        Cuenta cuentaExists = repository.findByUserUuidAndSite(user.getUuid(), cuenta.getSite())
+                .orElseThrow(()->new CuentaNotFoundException("Cuenta no encontrada"));
+
+        cuentaExists.setPassword(cuenta.getPassword());
+        cuentaExists.setExpirationTime(cuenta.getExpirationTime());
+        cuentaExists.setCreateTime(getFecha());
+        cuentaExists.setNotifiedForExpiration(false);
+        cuentaExists.setNotifiedForExpired(false);
+
+        repository.save(cuentaExists);
     }
 
     @Override
     @Transactional
     public void delete(String site) throws CuentaNotFoundException {
         repository.deleteBySite(site);
+    }
+
+    @Override
+    public long countByUserMail(String mail) throws UserNotFoundException {
+        Optional<User> user = userRepository.findByEmail(mail);
+        if(user.isPresent()){
+            return repository.countByUser(user.get());
+        }
+        return 0;
     }
 
     public String getFecha(){

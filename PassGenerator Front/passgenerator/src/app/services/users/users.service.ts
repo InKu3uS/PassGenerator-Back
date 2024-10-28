@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { User } from '../../model/UserSchema';
 import { Observable } from 'rxjs';
+import { environment } from '@envs/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,7 @@ export class UsersService {
 
   constructor(private http: HttpClient) { }
 
-  private apiUrl = 'http://localhost:8080/users';
+  private apiUrl = `${environment.API_URL}/users`;
   private token = localStorage.getItem('tkActUs');
   private headers = new HttpHeaders().set('Authorization', 'Bearer ' + this.token);
 

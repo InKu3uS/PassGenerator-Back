@@ -41,7 +41,6 @@ export class LoginComponent implements OnInit {
       next: (session) => {
         localStorage.setItem('tkActUs', session.token);
         const decodedToken = helper.decodeToken(session.token);
-        this.saveRole(decodedToken.role);
         localStorage.setItem('usLg', decodedToken.sub);
         this.route.navigate(['/home']).then(()=> {location.reload()});
       },
@@ -53,15 +52,6 @@ export class LoginComponent implements OnInit {
         }
       },
     });
-  }
-
-  saveRole(role: string) {
-    if(role === 'ROLE_USER'){
-      localStorage.setItem('usActLgRl', 'RLSR');
-    }
-    if(role === 'ROLE_ADMIN'){
-      localStorage.setItem('usActLgRl', 'RLMN');
-    }
   }
 
   redirectIfLoggedIn() {

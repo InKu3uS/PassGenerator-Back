@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Cuenta } from '../../model/cuentaSchema';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
+import { environment } from '@envs/environment.prod';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,7 @@ export class AccountsService {
 
   constructor(private http:HttpClient, private router:Router) { }
 
-  private apiUrl = 'http://localhost:8080/cuentas';
+  private apiUrl = `${environment.API_URL}/cuentas`
   private token = localStorage.getItem('tkActUs');
   private headers = new HttpHeaders().set('Authorization', 'Bearer ' + this.token);
 

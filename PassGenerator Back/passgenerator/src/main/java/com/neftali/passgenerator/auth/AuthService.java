@@ -1,7 +1,6 @@
 package com.neftali.passgenerator.auth;
 
 import com.neftali.passgenerator.dto.EmailDTO;
-import com.neftali.passgenerator.entity.Role;
 import com.neftali.passgenerator.entity.User;
 import com.neftali.passgenerator.exceptions.UserNotFoundException;
 import com.neftali.passgenerator.jwt.JwtService;
@@ -47,7 +46,6 @@ public class AuthService {
 
         return AuthResponse.builder()
                 .token(token)
-                .role(user.getRole().name())
                 .build();
     }
 
@@ -58,7 +56,6 @@ public class AuthService {
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .createTime(getFecha())
-                .role(Role.ROLE_USER)
                 .build();
 
         repository.save(user);

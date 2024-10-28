@@ -1,5 +1,6 @@
 package com.neftali.passgenerator.controller;
 
+import com.neftali.passgenerator.dto.UserDetailsDTO;
 import com.neftali.passgenerator.entity.User;
 import com.neftali.passgenerator.exceptions.UserNotFoundException;
 import com.neftali.passgenerator.service.UserService;
@@ -59,7 +60,7 @@ public class UserController {
     }
 
     @GetMapping(value = {"/list"})
-    public ResponseEntity<List<User>> findAll() throws UserNotFoundException {
+    public ResponseEntity<List<UserDetailsDTO>> findAll() throws UserNotFoundException {
         return ResponseEntity.ok(service.findAll());
     }
 

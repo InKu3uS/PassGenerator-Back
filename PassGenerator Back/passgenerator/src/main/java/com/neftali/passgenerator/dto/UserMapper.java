@@ -12,4 +12,11 @@ public interface UserMapper {
     @Mapping(source = "email", target = "email")
     User userDTOToUser(UserDTO userDTO);
 
+    @Mapping(source = "uuid", target = "uuid")
+    @Mapping(source = "createTime", target = "createTime")
+    UserDetailsDTO userToUserDetailsDTO(User user);
+
+    @Mapping(source = "email", target = "email")
+    User userDetailsDTOToUser(UserDetailsDTO userDetailsDTO);
+
 }

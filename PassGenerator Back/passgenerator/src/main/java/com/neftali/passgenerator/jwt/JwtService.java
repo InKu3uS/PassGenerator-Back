@@ -23,7 +23,6 @@ public class JwtService {
 
     public String getToken(User user) {
         Map<String, Object> extraClaims = new HashMap<>();
-        extraClaims.put("role", user.getRole().name());
         return getToken(extraClaims, user);
     }
 
@@ -50,10 +49,6 @@ public class JwtService {
 
     public String getUsernameFromToken(String token) {
         return getClaim(token, Claims::getSubject);
-    }
-
-    public String getRoleFromToken(String token) {
-        return getClaim(token, claims -> claims.get("role", String.class));
     }
 
     public boolean isTokenValid(String token, UserDetails userDetails) {

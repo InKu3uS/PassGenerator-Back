@@ -16,7 +16,8 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
 
   }
-  //TODO: Usar MailDTO para el envio de correos.
-  //TODO: Clase de utilidades en el back
-  //TODO: Menu administrador?
+  //TODO: Tests Springboot.
+  //TODO: Tests Angular.
+  //TODO: Redireccionar en mi perfil si no se encuentra el usuario.
+  //TODO: Terminar tests
 }

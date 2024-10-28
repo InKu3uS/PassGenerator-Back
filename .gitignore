@@ -1,2 +1,3 @@
 PassGenerator Back/passgenerator/src/main/resources/mail.properties
 PassGenerator Back/passgenerator/Dockerfile
+PassGenerator Back/docker-compose.yml

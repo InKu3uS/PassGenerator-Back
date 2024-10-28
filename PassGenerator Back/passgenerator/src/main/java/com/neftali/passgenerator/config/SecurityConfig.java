@@ -11,6 +11,11 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
+
+import java.util.List;
 
 
 @Configuration
@@ -21,28 +26,26 @@ public class SecurityConfig {
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final AuthenticationProvider authProvider;
 
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .csrf(AbstractHttpConfigurer::disable
                 )
-                .cors(corsCustomizer -> corsCustomizer
-                        .configurationSource(request -> {
-                            var corsConfiguration = new org.springframework.web.cors.CorsConfiguration();
-                            corsConfiguration.addAllowedOrigin("http://localhost:4200");
-                            corsConfiguration.addAllowedMethod("*");
-                            corsConfiguration.addAllowedHeader("*");
-                            corsConfiguration.setAllowCredentials(true);
-                            return corsConfiguration;
-                        }))
+                .cors(cors -> cors.configurationSource(request -> {
+                    CorsConfiguration config = new CorsConfiguration();
+                    config.setAllowedOrigins(List.of("http://localhost:4200"));
+                    config.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
+                    config.setExposedHeaders(List.of("*"));
+                    config.setAllowCredentials(true);
+                    return config;
+                }))
                 .authorizeHttpRequests(authRequest ->
                         authRequest
                             .requestMatchers("/auth/**",
                                     "/swagger-ui/**",
                                     "/v3/**",
                                     //"users/**",
-                                    "cuentas/**",
+                                    //"cuentas/**",
                                     "/resources/**"
                             ).permitAll()
                             .anyRequest().authenticated()
@@ -53,4 +56,5 @@ public class SecurityConfig {
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
+
 }

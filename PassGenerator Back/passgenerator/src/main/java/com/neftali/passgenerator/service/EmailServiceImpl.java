@@ -177,8 +177,6 @@ public class EmailServiceImpl implements IEmailService {
         }
     }
 
-
-
     public LocalDate dateParser(String date){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         try {

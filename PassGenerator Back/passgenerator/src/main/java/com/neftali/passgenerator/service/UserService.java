@@ -1,5 +1,6 @@
 package com.neftali.passgenerator.service;
 
+import com.neftali.passgenerator.dto.UserDetailsDTO;
 import com.neftali.passgenerator.entity.User;
 import com.neftali.passgenerator.exceptions.UserNotFoundException;
 import jakarta.mail.MessagingException;
@@ -8,7 +9,7 @@ import java.util.List;
 
 public interface UserService {
 
-    List<User> findAll() throws UserNotFoundException;
+    List<UserDetailsDTO> findAll() throws UserNotFoundException;
 
     User findByUuid(String uuid) throws UserNotFoundException;
 

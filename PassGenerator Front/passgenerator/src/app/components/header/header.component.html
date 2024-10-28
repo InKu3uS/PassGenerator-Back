@@ -89,12 +89,6 @@
               >Mis Passwords</a
             >
             <a
-              *ngIf="isLoggedIn && role == 'RLMN'"
-              routerLink="users/list"
-              class="rounded-md px-3 py-2 max-md:text-sm max-md:px-1 text-md font-bold text-gray-300 hover:bg-gray-700 hover:text-white focus:bg-violet-600 active:translate-y-1"
-              >Lista de Usuarios</a
-            >
-            <a
               routerLink="/faq"
               class="rounded-md px-3 py-2 max-md:text-sm max-md:px-1 text-md font-bold text-gray-300 hover:bg-gray-700 hover:text-white focus:bg-violet-600 active:translate-y-1"
               >F.A.Q.</a
@@ -247,12 +241,6 @@
         routerLink="/passwords"
         class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white focus:bg-violet-600"
         >Mis Passwords</a
-      >
-      <a
-        *ngIf="isLoggedIn && role === 'RLMN'"
-        routerLink="users/list"
-        class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white focus:bg-violet-600"
-        >Lista de Usuarios</a
       >
       <a
         routerLink="/faq"

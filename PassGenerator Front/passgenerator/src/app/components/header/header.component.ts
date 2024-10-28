@@ -1,7 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth/auth.service';
-import { User } from '../../model/UserSchema';
 import { UsersService } from '../../services/users/users.service';
 
 @Component({
@@ -19,13 +17,11 @@ export class HeaderComponent implements OnInit{
   showMobileMenu = false;
   isLoggedIn = false;
   username = '';
-  role = '';
 
   ngOnInit(): void {
     this.isLoggedIn = this.authService.isLoggedIn();
     if(this.isLoggedIn){
       this.getUserName();
-      this.getRole();
     }
   }
 
@@ -58,9 +54,5 @@ export class HeaderComponent implements OnInit{
         }
       });
     } 
-  }
-
-  getRole(){
-    let role = localStorage.getItem('usActLgRl');
   }
 }

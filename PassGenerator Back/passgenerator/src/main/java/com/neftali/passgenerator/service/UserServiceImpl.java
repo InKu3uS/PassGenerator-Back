@@ -1,4 +1,6 @@
 package com.neftali.passgenerator.service;
+import com.neftali.passgenerator.dto.UserDetailsDTO;
+import com.neftali.passgenerator.dto.UserMapper;
 import com.neftali.passgenerator.entity.User;
 import com.neftali.passgenerator.exceptions.UserNotFoundException;
 import com.neftali.passgenerator.repository.CuentaRepository;
@@ -8,9 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,14 +28,16 @@ public class UserServiceImpl implements UserService{
     @Autowired
     private IEmailService emailService;
 
-    @Override
+    @Autowired
+    private UserMapper userMapper;
+
     @Transactional(readOnly = true)
-    public List<User> findAll() throws UserNotFoundException {
+    public List<UserDetailsDTO> findAll() throws UserNotFoundException {
         List<User> users = repository.findAll();
         if(users.isEmpty()){
             throw new UserNotFoundException("No se han encontrado usuarios");
         }
-        return users;
+        return users.stream().map(user -> userMapper.userToUserDetailsDTO(user)).toList();
     }
 
     @Override

@@ -9,6 +9,7 @@ import { AccountsService } from '../../services/accounts/accounts.service';
 import { SwalService } from '../../services/swal/swal.service';
 import Swal from 'sweetalert2';
 import { AuthService } from '../../services/auth/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-my-profile',
@@ -18,6 +19,7 @@ import { AuthService } from '../../services/auth/auth.service';
 })
 export class MyProfileComponent implements OnInit {
   private titleService = inject(TitleService);
+  private route = inject(Router);
   private authService = inject(AuthService);
   private title = inject(Title);
   private accountService = inject(AccountsService);
@@ -49,8 +51,15 @@ export class MyProfileComponent implements OnInit {
     this.title.setTitle(this.defaultTitle);
     this.titleService.blurTitle(this.defaultTitle);
     this.getMailLogged();
-    this.getUser(this.emailLoggedIn);
-    this.getNumberOfAccounts(this.emailLoggedIn);
+    
+    if(this.emailLoggedIn) {
+      this.getUser(this.emailLoggedIn);
+      this.getNumberOfAccounts(this.emailLoggedIn);
+    } else {
+      this.route.navigate(['/home']);
+      return;
+    }
+    
   }
 
   getMailLogged() {
@@ -103,6 +112,10 @@ export class MyProfileComponent implements OnInit {
   }
 
   getUser(email: string) {
+    if(!email) {
+      console.error('No se ha proporcionado un email');
+      return;
+    }
     this.userService.getUserByEmail(email).subscribe({
       next: (user) => {
         if (user.email && user.password) {
@@ -144,7 +157,6 @@ verifyPassword(email: string, password: string): Observable<boolean> {
 
     this.userService.editUsername(this.emailLoggedIn, username).subscribe({
       next: (response) => {
-          console.log(response);
           this.getUser(this.emailLoggedIn);
           this.permitUsernameEdit = false;
           this.swal.usernameSaved(username);

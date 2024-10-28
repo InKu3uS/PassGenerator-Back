@@ -1,5 +1,6 @@
 package com.neftali.passgenerator.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -20,6 +21,7 @@ public class Cuenta {
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "user_uuid", referencedColumnName = "uuid")
+    @JsonBackReference
     private User user;
 
     @Column(nullable = false)

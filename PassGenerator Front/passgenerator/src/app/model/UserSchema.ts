@@ -6,7 +6,6 @@ export const userSchema = z.object({
     email: z.string().email(),
     password: z.string(),
     createTime: z.string().optional(),
-    role: z.string().optional(),
 });
 
 export type User = z.infer<typeof userSchema>
@@ -28,5 +27,4 @@ export type UserWithoutUuid = z.infer<typeof userWithoutUuidSchema>;
 export const createUser = userSchema.partial({
     uuid:true,
     createTime:true,
-    role: true
 });

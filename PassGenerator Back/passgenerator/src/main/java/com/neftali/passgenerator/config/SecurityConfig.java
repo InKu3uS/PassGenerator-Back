@@ -31,22 +31,23 @@ public class SecurityConfig {
         return http
                 .csrf(AbstractHttpConfigurer::disable
                 )
-                .cors(cors -> cors.configurationSource(request -> {
-                    CorsConfiguration config = new CorsConfiguration();
-                    config.setAllowedOrigins(List.of("http://localhost:4200"));
-                    config.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
-                    config.setExposedHeaders(List.of("*"));
-                    config.setAllowCredentials(true);
-                    return config;
-                }))
+                /**
+                 .cors(cors -> cors.configurationSource(request -> {
+                 CorsConfiguration config = new CorsConfiguration();
+                 config.setAllowedOrigins(List.of("http://localhost:4200", "https://passgenerator-six.vercel.app"));
+                 config.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
+                 config.setExposedHeaders(List.of("Authorization", "Content-Type", "X-Requested-With", "Origin", "Accept", "Access-Control-Allow-Request-Method"));
+                 config.setAllowCredentials(true);
+                 return config;
+                 }))
+                 */
                 .authorizeHttpRequests(authRequest ->
                         authRequest
                             .requestMatchers("/auth/**",
                                     "/swagger-ui/**",
                                     "/v3/**",
-                                    //"users/**",
-                                    //"cuentas/**",
-                                    "/resources/**"
+                                    "/resources/**",
+                                    "/health"
                             ).permitAll()
                             .anyRequest().authenticated()
                 )

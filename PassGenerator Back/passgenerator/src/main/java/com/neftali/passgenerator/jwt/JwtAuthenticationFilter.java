@@ -88,6 +88,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String requestUri = request.getRequestURI();
         return requestUri.startsWith("/auth/") ||
                 requestUri.startsWith("/swagger-ui/") ||
-                requestUri.startsWith("/v3/");
+                requestUri.startsWith("/v3/") ||
+                requestUri.startsWith("/health");
     }
 }

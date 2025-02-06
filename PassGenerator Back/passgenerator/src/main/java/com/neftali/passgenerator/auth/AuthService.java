@@ -1,6 +1,7 @@
 package com.neftali.passgenerator.auth;
 
 import com.neftali.passgenerator.dto.EmailDTO;
+import com.neftali.passgenerator.entity.Role;
 import com.neftali.passgenerator.entity.User;
 import com.neftali.passgenerator.exceptions.UserNotFoundException;
 import com.neftali.passgenerator.jwt.JwtService;
@@ -10,7 +11,9 @@ import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -32,16 +35,12 @@ public class AuthService {
     public AuthResponse login(LoginRequest request) throws UserNotFoundException {
 
         try {
-
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getMail(), request.getPassword()));
-
-        } catch(Exception e){
-
+        } catch(BadCredentialsException e){
             throw new UserNotFoundException("Invalid email or password");
-
         }
 
-        User user = repository.findByEmail(request.getMail()).orElseThrow();
+        User user = repository.findByEmail(request.getMail()).orElseThrow(() -> new UsernameNotFoundException("User not found"));
         String token = jwtService.getToken(user);
 
         return AuthResponse.builder()
@@ -56,6 +55,7 @@ public class AuthService {
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .createTime(getFecha())
+                .role(Role.ROLE_USER)
                 .build();
 
         repository.save(user);
